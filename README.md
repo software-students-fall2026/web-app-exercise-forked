@@ -4,7 +4,7 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+Forked is an application that allows people of all ages to trade their skills by matching interests and allowing them to meet up to teach & learn.
 
 ## User stories
 
