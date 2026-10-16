@@ -8,7 +8,7 @@ Forked is an application that allows people of all ages to trade their skills by
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+[User Stories](https://github.com/software-students-fall2026/web-app-exercise-forked/issues) 
 
 ## Steps necessary to run the software
 
