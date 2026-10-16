@@ -8,7 +8,7 @@ See instructions. Delete this line and place the Product Vision Statement here.
 
 ## User stories
 
-https://github.com/software-students-fall2026/web-app-exercise-forked/issues
+[User Stories](https://github.com/software-students-fall2026/web-app-exercise-forked/issues) 
 
 ## Steps necessary to run the software
 
