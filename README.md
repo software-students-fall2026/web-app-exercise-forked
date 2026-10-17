@@ -4,11 +4,11 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+Forked is an application that allows people of all ages to trade their skills by matching interests and allowing them to meet up to teach & learn.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+[User Stories](https://github.com/software-students-fall2026/web-app-exercise-forked/issues) 
 
 ## Steps necessary to run the software
 
@@ -16,4 +16,4 @@ See instructions. Delete this line and place instructions to download, configure
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
+[Task Board](https://github.com/orgs/software-students-fall2026/projects/2/views/1)
