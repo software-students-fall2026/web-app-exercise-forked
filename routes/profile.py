@@ -6,6 +6,12 @@ from db import db
 
 profile_bp = Blueprint('profile', __name__, url_prefix="/profile")
 
+@profile_bp.route("/")
+@login_required
+def my_profile():
+    user = db.users.find_one({"_id": ObjectId(current_user.id)})
+    return render_template("myProfile.html", user=user)
+
 @profile_bp.route("/<user_id>")
 def view(user_id):
     user = db.users.find_one({"_id": ObjectId(user_id)})
