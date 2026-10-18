@@ -1,32 +1,17 @@
 from flask import Flask, render_template, request, redirect, abort, url_for, make_response
+from dotenv import load_dotenv
+load_dotenv()
+import os
 from db import db
+from routes.auth import auth_bp, login_manager
+from routes.profile import profile_bp
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+login_manager.init_app(app)
+app.register_blueprint(auth_bp)
+app.register_blueprint(profile_bp)
 
-@app.route("/login")
-def login():
-    return render_template("login.html")
-
-@app.route("/myProfile")
-def myProfile():
-    return render_template("myProfile.html")
-
-@app.route("/theirProfile")
-def theirProfile():
-    return render_template("theirProfile.html")
-
-@app.route("/editProfile")
-def editProfile():
-    return render_template("editProfile.html")
-
-@app.route("/matches")
-def matches():
-    return render_template("matches.html")
-
-@app.route("/map")
-def map():
-    return render_template("map.html")
+if __name__ == "__main__":
+    app.run(debug=True)
