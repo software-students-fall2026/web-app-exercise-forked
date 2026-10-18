@@ -7,6 +7,26 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/myProfile")
+def myProfile():
+    return render_template("myProfile.html")
+
+@app.route("/theirProfile")
+def theirProfile():
+    return render_template("theirProfile.html")
+
+@app.route("/editProfile")
+def editProfile():
+    return render_template("editProfile.html")
+
 @app.route("/matches")
 def matches():
-    return "<p>This is my matches page</p"
+    return render_template("matches.html")
+
+@app.route("/map")
+def map():
+    return render_template("map.html")
