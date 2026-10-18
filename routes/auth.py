@@ -54,7 +54,7 @@ def login():
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
-    if flask.request == 'GET':
+    if flask.request.method == 'GET':
        return flask.render_template('login.html')
 
     email = flask.request.form['email']
