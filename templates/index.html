@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>Hi, {username}!</h1>
+    <p>What skill would you like to learn today?</p>
+
+    <!-- introduction to the website and its purpose -->
+    
+    <!-- if current user is logged in -->
+    <div> 
+        <a href="">Find a skill</a>
+        <a href="">Teach a skill</a>
+    </div>
+
+    <!-- else if there are recent postings nearby -->
+    <h2>Recent Postings Nearby</h2>
+    <ul>
+        <li>Example posting</li>
+    </ul>
+    
+    <!-- else (current user is not logged in) -->
+    <div>
+        <h2>Fork your skills</h2>
+        <p>Teach what you know. Learn what you don't. Trade skills with your community!</p>
+    </div>
+
+    <div>
+        <h2>How it works!</h2>
+        <ol>
+            <li>Sign up and create your profile</li>
+            <li>Post a skill you can teach</li>
+            <li>Browse skills you want to learn</li>
+            <li>Connect with other users near you and trade skills!</li>
+        </ol>
+    </div>
+
+
+{% endblock %}
