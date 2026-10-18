@@ -3,18 +3,33 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <div class="tab">
-        <button class="tabLinks" onclick="openTab(event, 'login')">Login</button>
-        <button class="tabLinks" onclick="openTab(event, 'signup')">Sign Up</button>
+    <div>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}">Sign Up</a>
     </div>    
 
-    <div id="Login" class="tabcontent">
-        <h3>Login</h3>
-        <p>Please input your credentials to login.</p>
-    </div>
-    
-    <div id="SignUp" class="tabcontent">
+    {% if signing_up %}
+    <div>
         <h3>Sign Up</h3>
         <p>Please input your credentials to sign up.</p>
+        <form action = "{{ url_for('auth.register') }}" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Sign Up</button>
+        </form>
     </div>
+
+    {% else %}
+    <div>
+        <h3>Login</h3>
+        <p>Please input your credentials to login.</p>
+        <form action = "{{ url_for('auth.login') }}" method="post">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    {% endif %}   
 {% endblock %}
