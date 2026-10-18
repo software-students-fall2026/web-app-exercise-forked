@@ -38,13 +38,7 @@ def request_loader(request):
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'GET':
-        return '''
-               <form action='login' method='POST'>
-                <input type='text' name='email' id='email' placeholder='email'/>
-                <input type='password' name='password' id='password' placeholder='password'/>
-                <input type='submit' name='submit'/>
-               </form>
-               '''
+        return flask.render_template('login.html')
 
     email = flask.request.form['email']
     password = flask.request.form['password']
@@ -60,14 +54,8 @@ def login():
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
-    if flask.request.method == 'GET':
-        return '''
-               <form action='register' method='POST'>
-                <input type='text' name='email' placeholder='email'/>
-                <input type='password' name='password' placeholder='password'/>
-                <input type='submit' name='Register'/>
-               </form>
-               '''
+    if flask.render.method == 'GET':
+       return flask.render_template('login.html')
 
     email = flask.request.form['email']
     password = flask.request.form['password']
