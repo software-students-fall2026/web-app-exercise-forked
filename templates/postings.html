@@ -4,11 +4,43 @@
 
 {% block content %}
     <h1>Postings</h1>
-    
-    <p>Browse different postings!</p>
+    <p>Browse postings from different users!</p>
 
-    <ul>
-        <li>Posting 1</li>
-        <li>Posting 2</li>
-    </ul>
+    <form action =" {{ url_for('postings.posts') }}" method="get">
+        <input type="search" name="skill" value="{{search}}" placeholder="Search by skill, e.g. Pottery">
+        <button type="submit">Search</button>
+        {% if search%}
+            <a href="{{ url_for('postings.posts') }}">Clear Search</a>
+        {% endif %}
+    </form>
+    
+    {% if all_skills %}
+        <h2>Browse</h2>
+        <ul>
+            {% for s in all_skills %}
+                <li><a href="{{ url_for('postings.posts', skill=s) }}">{{ s }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>
+        {% if search %}Teachers for "{{ search }}"{% else %}All teachers{% endif %}
+        ({{ users|length }})
+    </h2>
+
+    {% for u in users %}
+        <div>
+            <h3>{{ u.username }}</h3>
+            <p>Can teach:</p>
+            <ul>
+                {% for s in u.teach_skills %}
+                    <li>{{ s }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+    {% else %}
+        <p>No one is teaching {% if search %}"{{ search }}"{% else %}anything{% endif %} yet.</p>
+    {% endfor %}
 {% endblock %}
