@@ -7,8 +7,21 @@
     
     <p>View and manage your matches below.</p>
 
-    <ul>
-        <li>Example match 1</li>
-        <li>Example match 2</li>
-    </ul>
+    <p>You have {{matches|length}} matches.</p>
+
+    {% if matches %}
+        {% for match in matches %}
+            <p>{{match.user_two}}</p>
+            <p>{{match.date}}</p>
+            <form method="POST" action="{{ url_for('matches.approve_match', match_id=match._id) }}">
+                <button type="submit">Approve</button>
+            </form>
+            <form method="POST" action="{{ url_for('matches.decline_match', match_id=match._id) }}">
+                <button type="submit">Decline</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        <p>No matches yet.</p>
+    {% endif %}
+
 {% endblock %}
