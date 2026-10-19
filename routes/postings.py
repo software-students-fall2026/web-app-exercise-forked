@@ -8,4 +8,11 @@ postings_bp = Blueprint("postings", __name__, url_prefix="/postings")
 @postings_bp.route("/")
 @login_required
 def posts():
-    return render_template("postings.html")
+    posts = db["posts"]
+    return render_template("postings.html",search="")
+
+@postings_bp.route("/search")
+@login_required
+def posts():
+    posts = db["posts"]
+    return redirect(url_for("posts"),search="")
