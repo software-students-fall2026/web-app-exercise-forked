@@ -13,6 +13,6 @@ def posts():
 
 @postings_bp.route("/search")
 @login_required
-def posts():
+def search_posts():
     posts = db["posts"]
     return redirect(url_for("posts"),search="")

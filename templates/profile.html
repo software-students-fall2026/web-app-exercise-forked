@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username or "Profile" }}{% endblock %}
+
+{% block content %}
+<div class="profile">
+    <aside class="profile-info">
+        <img class="profile-avatar" src="{{ url_for('static', filename='images/placeholder.png') }}" alt="">
+        <h1>{{ user.username or "Unnamed user" }}</h1>
+        <dl>
+            <dt>Email</dt>
+            <dd>{{ user.email }}</dd>
+            <dt>Age</dt>
+            <dd>{{ user.age or "Not set" }}</dd>
+        </dl>
+
+        {% if is_own %}
+        <a class="button edit-button" href="{{ url_for('profile.edit') }}">Edit profile</a>
+        {% endif %}
+    </aside>
+
+    <section class="profile-skills">
+        <div class="skill-section">
+            <h2>I can teach</h2>
+            <div class="skill-cards">
+                {% for skill in user.skills_teach or [] %}
+                <button type="button" class="skill-card teach"
+                        data-name="{{ skill.name }}"
+                        data-label="Proficiency"
+                        data-proficiency="{{ skill.proficiency or '' }}"
+                        data-description="{{ skill.description or '' }}">
+                    {{ skill.name }}
+                </button>
+                {% else %}
+                <p class="empty">No skills listed yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="skill-section">
+            <h2>I want to learn</h2>
+            <div class="skill-cards">
+                {% for skill in user.skills_learn or [] %}
+                <button type="button" class="skill-card learn"
+                        data-name="{{ skill.name }}"
+                        data-label="Current level"
+                        data-proficiency="{{ skill.proficiency or '' }}"
+                        data-description="{{ skill.description or '' }}">
+                    {{ skill.name }}
+                </button>
+                {% else %}
+                <p class="empty">No skills listed yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</div>
+
+<dialog id="skill-dialog">
+    <div class="dialog-body">
+        <h3 id="dialog-name"></h3>
+        <p><strong id="dialog-label"></strong>: <span id="dialog-proficiency"></span></p>
+        <p id="dialog-description"></p>
+        <form method="dialog">
+            <button class="button">Close</button>
+        </form>
+    </div>
+</dialog>
+
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}
