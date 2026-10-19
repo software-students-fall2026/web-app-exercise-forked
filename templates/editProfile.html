@@ -3,6 +3,53 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block content %}
+    {# One row of inputs for one skill. Blank rows pass {} so every field starts empty. #}
+    {% macro skill_row(prefix, skill, level_label) %}
+        <fieldset class="skill-row">
+            <label>Skill
+                <input type="text" name="{{ prefix }}_name" value="{{ skill.name or '' }}">
+            </label>
+
+            <label>{{ level_label }}
+                <select name="{{ prefix }}_proficiency">
+                    <option value="">--</option>
+                    {% for level in levels %}
+                        <option value="{{ level }}" {% if skill.proficiency == level %}selected{% endif %}>{{ level }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            
+            <label>Description
+                <textarea name="{{ prefix }}_description" rows="2">{{ skill.description or '' }}</textarea>
+            </label>
+        </fieldset>
+    {% endmacro %}
+
     <h1>Edit Profile</h1>
     <p>Update your profile information below.</p>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form action="{{ url_for('profile.edit') }}" method="post">
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" value="{{ user.username or '' }}" required>
+
+        <label for="age">Age</label>
+        <input id="age" type="number" name="age" min="1" max="120" value="{{ user.age or '' }}">
+
+        <h2>Skills I can teach</h2>
+        {% for skill in user.teach_skills %}{{ skill_row("teach", skill, "Proficiency") }}{% endfor %}
+        {% for i in range(blank_rows) %}{{ skill_row("teach", {}, "Proficiency") }}{% endfor %}
+
+        <h2>Skills I want to learn</h2>
+        {% for skill in user.learn_skills %}{{ skill_row("learn", skill, "Current level") }}{% endfor %}
+        {% for i in range(blank_rows) %}{{ skill_row("learn", {}, "Current level") }}{% endfor %}
+
+        <p>To remove a skill, clear its name. Save and come back for more empty rows for now (will add a + button later).</p>
+
+        <button type="submit">Save</button>
+        <a href="{{ url_for('profile.my_profile') }}">Cancel</a>
+    </form>
 {% endblock %}
