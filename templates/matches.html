@@ -11,8 +11,10 @@
 
     {% if matches %}
         {% for match in matches %}
+            <p>{{match.user_one}}</p>
             <p>{{match.user_two}}</p>
             <p>{{match.date}}</p>
+            <p>{{match.status}}</p>
             <form method="POST" action="{{ url_for('matches.approve_match', match_id=match._id) }}">
                 <button type="submit">Approve</button>
             </form>
