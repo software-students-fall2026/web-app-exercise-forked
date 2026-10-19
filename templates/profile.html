@@ -23,12 +23,13 @@
         <div class="skill-section">
             <h2>I can teach</h2>
             <div class="skill-cards">
-                {% for skill in user.skills_teach or [] %}
+                {% for skill in user.teach_skills or [] %}
                 <button type="button" class="skill-card teach"
                         data-name="{{ skill.name }}"
                         data-label="Proficiency"
                         data-proficiency="{{ skill.proficiency or '' }}"
-                        data-description="{{ skill.description or '' }}">
+                        data-description="{{ skill.description or '' }}"
+                        data-images='{{ (skill.images or []) | tojson }}'>
                     {{ skill.name }}
                 </button>
                 {% else %}
@@ -40,7 +41,7 @@
         <div class="skill-section">
             <h2>I want to learn</h2>
             <div class="skill-cards">
-                {% for skill in user.skills_learn or [] %}
+                {% for skill in user.learn_skills or [] %}
                 <button type="button" class="skill-card learn"
                         data-name="{{ skill.name }}"
                         data-label="Current level"
@@ -61,6 +62,7 @@
         <h3 id="dialog-name"></h3>
         <p><strong id="dialog-label"></strong>: <span id="dialog-proficiency"></span></p>
         <p id="dialog-description"></p>
+        <div id="dialog-images"></div>
         <form method="dialog">
             <button class="button">Close</button>
         </form>

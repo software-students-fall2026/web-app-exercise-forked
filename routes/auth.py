@@ -52,6 +52,10 @@ def login():
 
     return 'Bad login'
 
+def parse_skills(raw):
+    names = [s.strip().title() for s in raw.split(',') if s.strip()]
+    return [{'name': name, 'proficiency': '', 'description': '', 'images': []} for name in names]
+
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if flask.request.method == 'GET':
@@ -61,8 +65,8 @@ def register():
     email = flask.request.form['email']
     password = flask.request.form['password']
 
-    teach_skills = [s.strip().title() for s in flask.request.form.get('teach_skills', '').split(',') if s.strip()]
-    learn_skills = [s.strip().title() for s in flask.request.form.get('learn_skills', '').split(',') if s.strip()]
+    teach_skills = parse_skills(flask.request.form.get('teach_skills', ''))
+    learn_skills = parse_skills(flask.request.form.get('learn_skills', ''))
 
     if db.users.find_one({'email': email}):
         return 'Email already registered, please pick another'
