@@ -23,7 +23,7 @@
         <div class="skill-section">
             <h2>I can teach</h2>
             <div class="skill-cards">
-                {% for skill in user.skills_teach or [] %}
+                {% for skill in user.teach_skills or [] %}
                 <button type="button" class="skill-card teach"
                         data-name="{{ skill.name }}"
                         data-label="Proficiency"
@@ -41,7 +41,7 @@
         <div class="skill-section">
             <h2>I want to learn</h2>
             <div class="skill-cards">
-                {% for skill in user.skills_learn or [] %}
+                {% for skill in user.learn_skills or [] %}
                 <button type="button" class="skill-card learn"
                         data-name="{{ skill.name }}"
                         data-label="Current level"

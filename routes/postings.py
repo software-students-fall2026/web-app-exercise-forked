@@ -16,14 +16,14 @@ def posts():
         "teach_skills.0": {"$exists": True},
     }
 
-    # If they searched, only keep users whose teach_skills contain that text (case-insensitive)
+    # If they searched, only keep users with a teach skill name containing that text (case-insensitive)
     if search:
-        query["teach_skills"] = {"$regex": re.escape(search), "$options": "i"}
+        query["teach_skills.name"] = {"$regex": re.escape(search), "$options": "i"}
 
     # Get matching users from the database, only their username and  skills but never passwords 
     users = list(db.users.find(query, {"username": 1, "teach_skills": 1}).sort("username", 1))
 
     # Every skill anyone teaches, for the "Browse by skill" links
-    all_skills = sorted(db.users.distinct("teach_skills"), key=str.lower)
+    all_skills = sorted(db.users.distinct("teach_skills.name"), key=str.lower)
 
     return render_template("postings.html", users=users, search=search, all_skills=all_skills)
