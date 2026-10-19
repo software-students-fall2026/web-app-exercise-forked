@@ -28,7 +28,8 @@
                         data-name="{{ skill.name }}"
                         data-label="Proficiency"
                         data-proficiency="{{ skill.proficiency or '' }}"
-                        data-description="{{ skill.description or '' }}">
+                        data-description="{{ skill.description or '' }}"
+                        data-images='{{ (skill.images or []) | tojson }}'>
                     {{ skill.name }}
                 </button>
                 {% else %}
@@ -61,6 +62,7 @@
         <h3 id="dialog-name"></h3>
         <p><strong id="dialog-label"></strong>: <span id="dialog-proficiency"></span></p>
         <p id="dialog-description"></p>
+        <div id="dialog-images"></div>
         <form method="dialog">
             <button class="button">Close</button>
         </form>
