@@ -31,5 +31,9 @@
         </form>
     </div>
 
+    {% if error %}
+    <p> {{error}} </p>
+    {% endif %}
+
     {% endif %}   
 {% endblock %}
