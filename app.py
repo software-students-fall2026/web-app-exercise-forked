@@ -10,7 +10,7 @@ from routes.matches import matches_bp
 from routes.postings import postings_bp
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY")
+app.secret_key = os.urandom(24)
 
 login_manager.init_app(app)
 app.register_blueprint(auth_bp)
