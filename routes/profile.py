@@ -68,6 +68,7 @@ def edit():
         return show_form()
 
     username = request.form.get("username", "").strip()
+    email = request.form.get("email", "").strip()
     age_text = request.form.get("age", "").strip()
 
     if not username:
@@ -83,6 +84,7 @@ def edit():
         {"_id": user["_id"]},
         {"$set": {
             "username": username,
+            "email": email,
             "age": age,
             "teach_skills": read_skills("teach", teach_skills),
             "learn_skills": read_skills("learn", learn_skills),
