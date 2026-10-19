@@ -2,7 +2,6 @@ from bson.errors import InvalidId
 from bson.objectid import ObjectId
 from flask import Blueprint, render_template, abort, redirect, request, url_for
 from flask_login import current_user, login_required
-
 from db import db
 
 profile_bp = Blueprint('profile', __name__, url_prefix="/profile")
@@ -16,7 +15,6 @@ def find_user(user_id: str):
     if user is None:
         abort(404)
     return user
-
 
 @profile_bp.route("/")
 @login_required
@@ -55,7 +53,6 @@ def read_skills(prefix, old_skills):
             "images": old_images.get(name.lower(), []),
         })
     return skills
-
 
 @profile_bp.route("/edit", methods=["GET", "POST"])
 @login_required

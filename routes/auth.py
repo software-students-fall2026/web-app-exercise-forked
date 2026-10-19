@@ -5,14 +5,12 @@ from werkzeug.security import generate_password_hash, check_password_hash  #flas
 from db import db
 from flask import session
 
-
 auth_bp = flask.Blueprint('auth', __name__)
 
 login_manager = flask_login.LoginManager()
 
 class User(flask_login.UserMixin):
     pass
-
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -23,7 +21,6 @@ def user_loader(user_id):
     user.id = str(user_doc['_id'])
     return user
 
-
 @login_manager.request_loader
 def request_loader(request):
     email = request.form.get('email')
@@ -33,8 +30,6 @@ def request_loader(request):
     user = User()
     user.id = str(user_doc['_id'])
     return user
-
-
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -81,7 +76,6 @@ def register():
     })
 
     return flask.redirect(flask.url_for('auth.login'))  #login page
-
 
 @auth_bp.route('/protected')
 @flask_login.login_required
