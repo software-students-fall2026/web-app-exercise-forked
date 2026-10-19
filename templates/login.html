@@ -3,11 +3,6 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <div>
-        <a href="{{ url_for('auth.login') }}">Login</a>
-        <a href="{{ url_for('auth.register') }}">Sign Up</a>
-    </div>    
-
     {% if signing_up %}
     <div>
         <h3>Sign Up</h3>
@@ -29,6 +24,8 @@
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
+
+        <p>If you don't have an account: <a href="{{ url_for('auth.register') }}"> Sign up</a> </p> 
     </div>
 
     {% if error %}
