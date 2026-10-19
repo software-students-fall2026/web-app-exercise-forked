@@ -8,7 +8,6 @@
         <a href="{{ url_for('auth.register') }}">Sign Up</a>
     </div>    
 
-    {% if signing_up %}
     <div>
         <h3>Sign Up</h3>
         <p>Please input your credentials to sign up.</p>
@@ -16,20 +15,11 @@
             <input type="text" name="username" placeholder="Username" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
+
+            <input type="text" name="teach_skills" placeholder="Skills you can teach (comma separated)">
+            <input type="text" name="learn_skills" placeholder="Skills you want to learn (comma separated)">
+
             <button type="submit">Sign Up</button>
         </form>
     </div>
-
-    {% else %}
-    <div>
-        <h3>Login</h3>
-        <p>Please input your credentials to login.</p>
-        <form action = "{{ url_for('auth.login') }}" method="post">
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-    </div>
-
-    {% endif %}   
 {% endblock %}
