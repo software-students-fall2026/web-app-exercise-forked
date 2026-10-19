@@ -50,7 +50,7 @@ def login():
         flask_login.login_user(user)
         return flask.redirect(flask.url_for('profile.my_profile'))  #user profile page
 
-    return 'Bad login'
+    return flask.render_template('login.html', error="Invalid email or password.")
 
 def parse_skills(raw):
     names = [s.strip().title() for s in raw.split(',') if s.strip()]
