@@ -3,7 +3,6 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-    {# One row of inputs for one skill. Blank rows pass {} so every field starts empty. #}
     {% macro skill_row(prefix, skill, level_label) %}
         <fieldset class="skill-row">
             <label>Skill
@@ -18,7 +17,7 @@
                     {% endfor %}
                 </select>
             </label>
-            
+
             <label>Description
                 <textarea name="{{ prefix }}_description" rows="2">{{ skill.description or '' }}</textarea>
             </label>
@@ -40,12 +39,22 @@
         <input id="age" type="number" name="age" min="1" max="120" value="{{ user.age or '' }}">
 
         <h2>Skills I can teach</h2>
-        {% for skill in user.teach_skills %}{{ skill_row("teach", skill, "Proficiency") }}{% endfor %}
-        {% for i in range(blank_rows) %}{{ skill_row("teach", {}, "Proficiency") }}{% endfor %}
+        {% for skill in user.teach_skills %}
+            {{ skill_row("teach", skill, "Proficiency") }}
+        {% endfor %}
+        
+        {% for i in range(blank_rows) %}
+            {{ skill_row("teach", {}, "Proficiency") }}
+        {% endfor %}
 
         <h2>Skills I want to learn</h2>
-        {% for skill in user.learn_skills %}{{ skill_row("learn", skill, "Current level") }}{% endfor %}
-        {% for i in range(blank_rows) %}{{ skill_row("learn", {}, "Current level") }}{% endfor %}
+        {% for skill in user.learn_skills %}
+            {{ skill_row("learn", skill, "Current level") }}
+        {% endfor %}
+        
+        {% for i in range(blank_rows) %}
+            {{ skill_row("learn", {}, "Current level") }}
+        {% endfor %}
 
         <p>To remove a skill, clear its name. Save and come back for more empty rows for now (will add a + button later).</p>
 
