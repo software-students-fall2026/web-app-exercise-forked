@@ -18,4 +18,4 @@ def view(user_id):
     if user is None:
         abort(404)
 
-    return render_template("profile/view.html", user=user)
+    return render_template("view.html", user=user)
