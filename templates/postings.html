@@ -34,7 +34,7 @@
             <p>Can teach:</p>
             <ul>
                 {% for s in u.teach_skills %}
-                    <li>{{ s }}</li>
+                    <li>{{ s.name }}</li>
                 {% endfor %}
             </ul>
         </div>
