@@ -31,6 +31,11 @@
     {% for u in users %}
         <div>
             <h3>{{ u.username }}</h3>
+            <form method="POST" action="{{ url_for('matches.add_match', user_id=u._id)}}"> 
+                <button type="submit"> 
+                    Match
+                </button>
+            </form>
             <p>Can teach:</p>
             <ul>
                 {% for s in u.teach_skills %}
@@ -38,7 +43,6 @@
                 {% endfor %}
             </ul>
         </div>
-
 
     {% else %}
         <p>No one is teaching {% if search %}"{{ search }}"{% else %}anything{% endif %} yet.</p>
