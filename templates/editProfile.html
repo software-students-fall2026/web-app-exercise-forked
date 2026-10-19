@@ -3,7 +3,6 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-    {# One row of inputs for one skill. Blank rows pass {} so every field starts empty. #}
     {% macro skill_row(prefix, skill, level_label) %}
         <fieldset class="skill-row">
             <label>Skill
@@ -18,7 +17,7 @@
                     {% endfor %}
                 </select>
             </label>
-            
+
             <label>Description
                 <textarea name="{{ prefix }}_description" rows="2">{{ skill.description or '' }}</textarea>
             </label>

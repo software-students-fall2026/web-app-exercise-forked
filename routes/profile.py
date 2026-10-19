@@ -65,8 +65,7 @@ def edit():
     learn_skills = user.get("learn_skills", [])
 
     def show_form(error=None):
-        return render_template("editProfile.html", user=user, levels=PROFICIENCY_LEVELS,
-                               blank_rows=BLANK_ROWS, error=error)
+        return render_template("editProfile.html", user=user, levels=PROFICIENCY_LEVELS, blank_rows=BLANK_ROWS, error=error)
 
     if request.method == "GET":
         return show_form()
@@ -83,7 +82,6 @@ def edit():
             return show_form("Age must be a whole number from 1 to 120.")
         age = int(age_text)
 
-    # $set only changes these fields; email and password are left alone
     db.users.update_one(
         {"_id": user["_id"]},
         {"$set": {
