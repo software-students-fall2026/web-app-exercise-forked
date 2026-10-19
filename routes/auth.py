@@ -3,6 +3,7 @@ import flask_login
 from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash  #flask secruity thing
 from db import db
+from flask import session
 
 
 auth_bp = flask.Blueprint('auth', __name__)
