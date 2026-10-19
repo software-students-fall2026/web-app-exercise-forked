@@ -20,7 +20,7 @@ def my_matches():
 
 @matches_bp.route("/approve/<match_id>", methods=["POST"])
 @login_required
-def approve_match():
+def approve_match(match_id):
     try:
         oid = ObjectId(match_id)
     except (InvalidId, TypeError):
@@ -40,18 +40,18 @@ def approve_match():
     if res.matched_count == 0:
         abort(404)
 
-    return redirect(urlfor(matches.my_matches))
+    return redirect(url_for("matches.my_matches"))
 
 @matches_bp.route("/decline/<match_id>", methods=["POST"])
 @login_required
-def decline_match():
+def decline_match(match_id):
     try:
         oid = ObjectId(match_id)
     except (InvalidId, TypeError):
         abort(404)
 
     user_id = ObjectId(current_user.id)
-    res = db.matches.deleteOne(
+    res = db.matches.delete_one(
         {
             "_id": oid, 
             "$or": [
@@ -63,16 +63,16 @@ def decline_match():
     if res.deleted_count == 0:
         abort(404)
 
-    return redirect(urlfor(matches.my_matches))
+    return redirect(url_for("matches.my_matches"))
 
-@matches_bp.route("/matches/add/<user_id>")
+@matches_bp.route("/add/<user_id>", methods=["POST"])
 @login_required
-def add_match():
+def add_match(user_id):
     try:
         oid = ObjectId(user_id)
     except (InvalidId, TypeError):
         abort(404)
-    
+
     res = db.matches.insert_one({
         "user_one": ObjectId(current_user.id),
         "user_two": oid,
