@@ -21,7 +21,7 @@ app.register_blueprint(postings_bp)
 @app.route("/")
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for("auth.protected")) # [change later] to profile.my_profile
+        return redirect(url_for("profile.my_profile")) 
 
     return redirect(url_for("auth.login"))
 

@@ -48,7 +48,7 @@ def login():
         user = User()                       #creates session and makes user id from mongoid
         user.id = str(user_doc['_id'])
         flask_login.login_user(user)
-        return flask.redirect(flask.url_for('auth.protected'))
+        return flask.redirect(flask.url_for('profile.my_profile'))  #user profile page
 
     return 'Bad login'
 
