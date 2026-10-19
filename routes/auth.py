@@ -61,13 +61,18 @@ def register():
     email = flask.request.form['email']
     password = flask.request.form['password']
 
+    teach_skills = [s.strip().title() for s in flask.request.form.get('teach_skills', '').split(',') if s.strip()]
+    learn_skills = [s.strip().title() for s in flask.request.form.get('learn_skills', '').split(',') if s.strip()]
+
     if db.users.find_one({'email': email}):
         return 'Email already registered, please pick another'
 
     db.users.insert_one({
         'email': email,
         'username' : username,
-        'password': generate_password_hash(password)  #hashes password so it isn't plaintext
+        'password': generate_password_hash(password),  #hashes password so it isn't plaintext
+        'teach_skills': teach_skills,
+        'learn_skills': learn_skills,
     })
 
     return flask.redirect(flask.url_for('auth.login'))  #login page
