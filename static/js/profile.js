@@ -2,11 +2,13 @@ const dialog = document.getElementById("skill-dialog");
 
 document.querySelectorAll(".skill-card").forEach((card) => {
     card.addEventListener("click", () => {
-        nameDialog = document.getElementById("dialog-name");
-        labelDialog = document.getElementById("dialog-label");
-        profDialog = document.getElementById("dialog-proficiency");
-        descDialog = document.getElementById("dialog-description");
-        imageDialog = document.getElementById("dialog-images");
+        const skillDialog = document.getElementById("skill-dialog")
+
+        const nameDialog = document.getElementById("dialog-name");
+        const labelDialog = document.getElementById("dialog-label");
+        const profDialog = document.getElementById("dialog-proficiency");
+        const descDialog = document.getElementById("dialog-description");
+        const imageDialog = document.getElementById("dialog-images");
 
         nameDialog.textContent = card.dataset.name
         labelDialog.textContent = card.dataset.label
@@ -14,7 +16,8 @@ document.querySelectorAll(".skill-card").forEach((card) => {
         profDialog.textContent = card.dataset.proficiency
         descDialog.textContent = card.dataset.description
         
+        skillDialog.showModal()
 
-
+        
     })
 })

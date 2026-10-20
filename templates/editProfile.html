@@ -35,6 +35,9 @@
         <label for="username">Username</label>
         <input id="username" type="text" name="username" value="{{ user.username or '' }}" required>
 
+        <label for="username">Email</label>
+        <input id="email" type="text" name="email" value="{{ user.email or '' }}" required>
+
         <label for="age">Age</label>
         <input id="age" type="number" name="age" min="1" max="120" value="{{ user.age or '' }}">
 
