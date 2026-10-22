@@ -23,7 +23,7 @@ def index():
     if current_user.is_authenticated:
         return redirect(url_for("profile.my_profile")) 
 
-    return redirect(url_for("auth.login"))
+    return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

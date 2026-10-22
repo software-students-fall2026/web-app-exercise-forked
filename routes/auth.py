@@ -1,11 +1,11 @@
-import flask
+from flask import Flask, Blueprint, render_template, request, redirect, abort, url_for, make_response
 import flask_login
 from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash  #flask secruity thing
 from db import db
 from flask import session
 
-auth_bp = flask.Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)
 
 login_manager = flask_login.LoginManager()
 
@@ -33,20 +33,20 @@ def request_loader(request):
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if flask.request.method == 'GET':
-        return flask.render_template('login.html', signing_up=False)
+    if request.method == 'GET':
+        return render_template('login.html', signing_up=False)
 
-    email = flask.request.form['email']
-    password = flask.request.form['password']
+    email = request.form['email']
+    password = request.form['password']
 
     user_doc = db.users.find_one({'email': email}) # look up user by email
     if user_doc and check_password_hash(user_doc['password'], password):
         user = User()                       #creates session and makes user id from mongoid
         user.id = str(user_doc['_id'])
         flask_login.login_user(user)
-        return flask.redirect(flask.url_for('profile.my_profile'))  #user profile page
+        return redirect(url_for('profile.my_profile'))  #user profile page
 
-    return flask.render_template('login.html', error="Invalid email or password.")
+    return render_template('login.html', error="Invalid email or password.")
 
 def parse_skills(raw):
     names = [s.strip().title() for s in raw.split(',') if s.strip()]
@@ -54,15 +54,15 @@ def parse_skills(raw):
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
-    if flask.request.method == 'GET':
-       return flask.render_template('register.html', signing_up=True)
+    if request.method == 'GET':
+       return render_template('register.html', signing_up=True)
     
-    username = flask.request.form['username']
-    email = flask.request.form['email']
-    password = flask.request.form['password']
+    username = request.form['username']
+    email = request.form['email']
+    password = request.form['password']
 
-    teach_skills = parse_skills(flask.request.form.get('teach_skills', ''))
-    learn_skills = parse_skills(flask.request.form.get('learn_skills', ''))
+    teach_skills = parse_skills(request.form.get('teach_skills', ''))
+    learn_skills = parse_skills(request.form.get('learn_skills', ''))
 
     if db.users.find_one({'email': email}):
         return 'Email already registered, please pick another'
@@ -75,7 +75,7 @@ def register():
         'learn_skills': learn_skills,
     })
 
-    return flask.redirect(flask.url_for('auth.login'))  #login page
+    return redirect(url_for('auth.login'))  #login page
 
 @auth_bp.route('/protected')
 @flask_login.login_required
@@ -85,7 +85,7 @@ def protected():
 @auth_bp.route('/logout')
 def logout():
     flask_login.logout_user()
-    return flask.redirect(flask.url_for('auth.login'))
+    return redirect(url_for('auth.login'))
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
