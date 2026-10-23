@@ -3,24 +3,14 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    {% if signing_up %}
-    <div>
-        <h3>Sign Up</h3>
-        <p>Please input your credentials to sign up.</p>
-        <form action = "{{ url_for('auth.register') }}" method="post">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Sign Up</button>
-        </form>
-    </div>
 
-    {% else %}
     <div>
         <h3>Login</h3>
-        <p>Please input your credentials to login.</p>
+        <p>Please enter either your email or username</p>
         <form action = "{{ url_for('auth.login') }}" method="post">
-            <input type="email" name="email" placeholder="Email" required>
+            <input type="email" name="email" placeholder="Email"> 
+            <input type="username" name="username" placeholder="Username">
+            <p>Enter your password </p>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
@@ -30,7 +20,5 @@
 
     {% if error %}
     <p> {{error}} </p>
-    {% endif %}
-
     {% endif %}   
 {% endblock %}
