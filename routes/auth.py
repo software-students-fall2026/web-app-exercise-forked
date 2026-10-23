@@ -46,20 +46,19 @@ def login():
     if request.method == 'GET':
         return render_template('login.html')
 
-    email = request.form['email']
-    username = request.form ['username']
+    userOrEmail = request.form['username']
     password = request.form['password']
 
     user_doc = db.users.find_one(       #searches for either email or username, valid if either are found
         {
             '$or': [    
-            {'email': email},
-            {'username': username} 
+            {'email': userOrEmail},
+            {'username': userOrEmail} 
             ]
         }
     )
 
-    if user_doc  and check_password_hash(user_doc['password'], password):
+    if user_doc and check_password_hash(user_doc['password'], password):
         user = User()                             #creates session and makes user id from mongoid
         user.id = str(user_doc['_id'])
         flask_login.login_user(user)
@@ -68,7 +67,7 @@ def login():
     return render_template('login.html', error="Invalid username/email or password.")
 
 def parse_skills(raw):
-    names = [s.strip().title() for s in raw.split(',') if s.strip()]
+    names = [s.strip().title() for s in raw if s.strip()]
     return [{'name': name, 'proficiency': '', 'description': '', 'images': []} for name in names]
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
@@ -85,8 +84,8 @@ def register():
     email = request.form['email']
     password = request.form['password']
 
-    teach_skills = parse_skills(request.form.get('teach_skills', ''))
-    learn_skills = parse_skills(request.form.get('learn_skills', ''))
+    teach_skills = parse_skills(request.form.getlist("teach"))
+    learn_skills = parse_skills(request.form.getlist("learn"))
 
     if db.users.find_one({'email': email}):
         return render_template('register.html', error='Email already registered, please pick another')
