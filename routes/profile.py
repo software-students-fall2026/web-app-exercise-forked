@@ -74,6 +74,13 @@ def edit():
     if not username:
         return show_form("Username can't be empty.")
 
+    
+    if email != user.get('email') and db.users.find_one({'email': email}):
+        return show_form('Email already registered, please pick another') 
+    
+    if username != user.get('username') and db.users.find_one({'username': username}):
+        return show_form('Username already registered, please pick another') 
+
     age = None
     if age_text:
         if not age_text.isdigit() or not 1 <= int(age_text) <= 120:
