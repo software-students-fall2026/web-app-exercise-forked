@@ -46,20 +46,19 @@ def login():
     if request.method == 'GET':
         return render_template('login.html')
 
-    email = request.form['email']
-    username = request.form ['username']
+    userOrEmail = request.form['username']
     password = request.form['password']
 
     user_doc = db.users.find_one(       #searches for either email or username, valid if either are found
         {
             '$or': [    
-            {'email': email},
-            {'username': username} 
+            {'email': userOrEmail},
+            {'username': userOrEmail} 
             ]
         }
     )
 
-    if user_doc  and check_password_hash(user_doc['password'], password):
+    if user_doc and check_password_hash(user_doc['password'], password):
         user = User()                             #creates session and makes user id from mongoid
         user.id = str(user_doc['_id'])
         flask_login.login_user(user)

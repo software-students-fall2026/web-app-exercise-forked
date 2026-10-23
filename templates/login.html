@@ -6,12 +6,11 @@
 
     <div>
         <h3>Login</h3>
-        <p>Please enter either your email or username</p>
         <form action = "{{ url_for('auth.login') }}" method="post">
-            <input type="email" name="email" placeholder="Email"> 
-            <input type="username" name="username" placeholder="Username">
-            <p>Enter your password </p>
-            <input type="password" name="password" placeholder="Password" required>
+            <label for="username">Please enter your username or email</label>
+            <input type="text" name="username" id="username" required>
+            <label for="password">Enter your password</label>
+            <input type="password" name="password" id="password" required>
             <button type="submit">Login</button>
         </form>
 
