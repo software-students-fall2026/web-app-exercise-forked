@@ -11,12 +11,24 @@
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
 
-            <input type="text" name="teach_skills" placeholder="Skills you can teach (comma separated)">
-            <input type="text" name="learn_skills" placeholder="Skills you want to learn (comma separated)">
+            <div class="skills-list" data-field="teach">
+                <h2>Skills you can teach</h2>
+                <input type="text" data-entry placeholder="Enter skills you can teach">
+                <button type="button" data-add>Add Skill</button>
+                <div data-list></div>
+            </div>
+
+            <div class="skills-list" data-field="learn">
+                <h2>Skills you want to learn</h2>
+                <input type="text" data-entry placeholder="Enter skills you want to learn">
+                <button type="button" data-add>Add Skill</button>
+                <div data-list></div>
+            </div>
 
             <button type="submit">Sign Up</button>
         </form>
     </div>
+    <script src="{{ url_for('static', filename='js/skills.js') }}"></script>
     {% if error %}
     <p> {{error}} </p>
     {% endif %}

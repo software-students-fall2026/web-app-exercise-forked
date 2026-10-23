@@ -84,8 +84,8 @@ def register():
     email = request.form['email']
     password = request.form['password']
 
-    teach_skills = parse_skills(request.form.get('teach_skills', ''))
-    learn_skills = parse_skills(request.form.get('learn_skills', ''))
+    teach_skills = request.form.getlist("teach")
+    learn_skills = request.form.getlist("learn")
 
     if db.users.find_one({'email': email}):
         return render_template('register.html', error='Email already registered, please pick another')
