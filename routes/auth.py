@@ -67,7 +67,7 @@ def login():
     return render_template('login.html', error="Invalid username/email or password.")
 
 def parse_skills(raw):
-    names = [s.strip().title() for s in raw.split(',') if s.strip()]
+    names = [s.strip().title() for s in raw if s.strip()]
     return [{'name': name, 'proficiency': '', 'description': '', 'images': []} for name in names]
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
@@ -84,8 +84,8 @@ def register():
     email = request.form['email']
     password = request.form['password']
 
-    teach_skills = request.form.getlist("teach")
-    learn_skills = request.form.getlist("learn")
+    teach_skills = parse_skills(request.form.getlist("teach"))
+    learn_skills = parse_skills(request.form.getlist("learn"))
 
     if db.users.find_one({'email': email}):
         return render_template('register.html', error='Email already registered, please pick another')
