@@ -17,4 +17,8 @@
             <button type="submit">Sign Up</button>
         </form>
     </div>
+    {% if error %}
+    <p> {{error}} </p>
+    {% endif %}
+    
 {% endblock %}
