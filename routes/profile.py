@@ -99,6 +99,7 @@ def edit():
         "username": username,
         "email": email,
         "age": age,
+        "phone": phone,
         "teach_skills": read_skills("teach", teach_skills),
         "learn_skills": read_skills("learn", learn_skills),
     }
