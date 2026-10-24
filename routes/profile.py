@@ -3,6 +3,7 @@ from bson.objectid import ObjectId
 from flask import Blueprint, render_template, abort, redirect, request, url_for
 from flask_login import current_user, login_required
 from db import db
+from .auth import validate_phone
 
 profile_bp = Blueprint('profile', __name__, url_prefix="/profile")
 
@@ -70,6 +71,7 @@ def edit():
     username = request.form.get("username", "").strip()
     email = request.form.get("email", "").strip()
     age_text = request.form.get("age", "").strip()
+    phone = request.form.get("phone", "").strip()
 
     if not username:
         return show_form("Username can't be empty.")
@@ -80,6 +82,12 @@ def edit():
     
     if username != user.get('username') and db.users.find_one({'username': username}):
         return show_form('Username already registered, please pick another') 
+
+    if phone and phone != user.get('phone') and db.users.find_one({'phone': phone}):       # phone is there so you can remove your number. if it's empty it allows it to happen instead
+        return show_form('Phone number already registered')                                # of triggering either of the forms
+
+    if phone and validate_phone(phone) == False:
+        return show_form('Please enter a valid phone number') 
 
     age = None
     if age_text:
@@ -93,6 +101,7 @@ def edit():
             "username": username,
             "email": email,
             "age": age,
+            "phone": phone,
             "teach_skills": read_skills("teach", teach_skills),
             "learn_skills": read_skills("learn", learn_skills),
         }},

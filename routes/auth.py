@@ -1,5 +1,7 @@
 from flask import Flask, Blueprint, render_template, request, redirect, abort, url_for, make_response
 import flask_login
+import phonenumbers 
+from phonenumbers import NumberParseException, PhoneNumberFormat, region_code_for_number
 from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash  #flask secruity thing
 from db import db
@@ -20,6 +22,16 @@ def user_loader(user_id):
     user = User()
     user.id = str(user_doc['_id'])
     return user
+
+def validate_phone(phone_number, default_region= "US"):
+    try:
+        number = phonenumbers.parse(phone_number,default_region)    #default for if no country code
+        possible_num = phonenumbers.is_possible_number(number)      
+        return possible_num
+    except:
+        return False
+
+
 
 @login_manager.request_loader
 def request_loader(request):
@@ -82,6 +94,7 @@ def register():
     
     username = request.form['username']
     email = request.form['email']
+    phone = request.form['phone']
     password = request.form['password']
 
     teach_skills = parse_skills(request.form.getlist("teach"))
@@ -93,10 +106,17 @@ def register():
     if db.users.find_one({'username': username}):
         return render_template('register.html', error='Username already registered, please pick another')
 
+    if db.users.find_one({'phone': phone}):
+        return render_template('register.html', error='This phone number is already registered, please use another')
+
+    if validate_phone(phone) == False:
+        return render_template('register.html', error='Please enter a valid phone number')
+
     db.users.insert_one({
         'email': email,
         'username' : username,
         'password': generate_password_hash(password),  #hashes password so it isn't plaintext
+        'phone': phone,
         'teach_skills': teach_skills,
         'learn_skills': learn_skills,
     })

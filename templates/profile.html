@@ -12,6 +12,8 @@
             <dd>{{ user.email }}</dd>
             <dt>Age</dt>
             <dd>{{ user.age or "Not set" }}</dd>
+            <dt>Phone Number</dt>
+            <dd>{{ user.phone or "Not set" }}</dd>
         </dl>
 
         {% if is_own %}
