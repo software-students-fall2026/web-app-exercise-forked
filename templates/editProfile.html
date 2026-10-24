@@ -39,6 +39,9 @@
         <label for="username">Email</label>
         <input id="email" type="text" name="email" value="{{ user.email or '' }}" required>
 
+        <label for="phone">Phone Number</label>
+        <input id="phone" type="text" name="phone" value="{{ user.phone or '' }}">
+
         <label for="age">Age</label>
         <input id="age" type="number" name="age" min="1" max="120" value="{{ user.age or '' }}">
 
