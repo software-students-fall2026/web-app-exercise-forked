@@ -12,27 +12,28 @@ def my_matches():
     user_id = ObjectId(current_user.id)
     all_matches = list(db.matches.find({
         "$or": [
-            {"user_one": user_id},
-            {"user_two": user_id},
+            {"sender": user_id},
+            {"receiver": user_id},
         ]
     }))
+    
     return render_template("matches.html", matches=all_matches)
 
 @matches_bp.route("/approve/<match_id>", methods=["POST"])
 @login_required
 def approve_match(match_id):
     try:
-        oid = ObjectId(match_id)
+        match_oid = ObjectId(match_id)
     except (InvalidId, TypeError):
         abort(404)
     
     user_id = ObjectId(current_user.id)
     res = db.matches.update_one(
         {
-            "_id": oid, 
+            "_id": match_oid, 
             "$or": [
-                {"user_one": user_id},
-                {"user_two": user_id},
+                {"sender": user_id},
+                {"receiver": user_id},
             ]
         },
         {"$set": {"status": "Approved"}}
@@ -46,17 +47,17 @@ def approve_match(match_id):
 @login_required
 def decline_match(match_id):
     try:
-        oid = ObjectId(match_id)
+        match_oid = ObjectId(match_id)
     except (InvalidId, TypeError):
         abort(404)
 
     user_id = ObjectId(current_user.id)
     res = db.matches.delete_one(
         {
-            "_id": oid, 
+            "_id": match_oid, 
             "$or": [
-                {"user_one": user_id},
-                {"user_two": user_id},
+                {"sender": user_id},
+                {"receiver": user_id},
             ]
         },
     )
@@ -69,15 +70,24 @@ def decline_match(match_id):
 @login_required
 def add_match(user_id):
     try:
-        oid = ObjectId(user_id)
+        receiver_oid = ObjectId(user_id)
     except (InvalidId, TypeError):
         abort(404)
 
     res = db.matches.insert_one({
-        "user_one": ObjectId(current_user.id),
-        "user_two": oid,
-        "status": "Awaiting",
+        "sender": ObjectId(current_user.id),
+        "receiver": receiver_oid,
+        "status": "Awaiting Approval",
         "date": datetime.now(timezone.utc)
     })
+
+    db.users.update_one(
+        {"_id": ObjectId(current_user.id)},
+        {
+            "$addToSet": {
+                "sent_matches": receiver_oid
+            }
+        }
+    )
 
     return "", 204

@@ -11,8 +11,14 @@ postings_bp = Blueprint("postings", __name__, url_prefix="/postings")
 def posts():
     search = request.args.get("skill", "").strip()
 
+    current_user_id = ObjectId(current_user.id)
+    cur_user = db.users.find_one({"_id": current_user_id})
+    sent_matches = cur_user.get("sent_matches", [])
+
     query = {
-        "_id": {"$ne": ObjectId(current_user.id)},
+        "_id": {
+            "$nin": sent_matches + [current_user_id]
+        },
         "teach_skills.0": {"$exists": True},
     }
 
