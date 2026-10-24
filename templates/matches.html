@@ -11,16 +11,19 @@
 
     {% if matches %}
         {% for match in matches %}
-            <p>{{match.user_one}}</p>
-            <p>{{match.user_two}}</p>
+            <p>{{match.sender}}</p>
+            <p>{{match.receiver}}</p>
             <p>{{match.date}}</p>
             <p>{{match.status}}</p>
-            <form method="POST" action="{{ url_for('matches.approve_match', match_id=match._id) }}">
-                <button type="submit">Approve</button>
-            </form>
-            <form method="POST" action="{{ url_for('matches.decline_match', match_id=match._id) }}">
-                <button type="submit">Decline</button>
-            </form>
+            {% if match.receiver == current_user._id %}
+                You have received this match!
+                <form method="POST" action="{{ url_for('matches.approve_match', match_id=match._id) }}">
+                    <button type="submit">Approve</button>
+                </form>
+                <form method="POST" action="{{ url_for('matches.decline_match', match_id=match._id) }}">
+                    <button type="submit">Decline</button>
+                </form>
+            {% endif %}
         {% endfor %}
     {% else %}
         <p>No matches yet.</p>
