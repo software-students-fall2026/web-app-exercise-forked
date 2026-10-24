@@ -99,3 +99,38 @@
 /*   .profile { grid-template-columns: 1fr; } */
 /*   .profile-info { min-height: auto; } */
 /* } */
+
+/* wrapper shrinks to the input's normal width so it matches the other inputs */
+.password-field {
+    position: relative;
+    display: inline-block;
+}
+
+/* leave room on the right so typed text doesn't go under the icon */
+.password-field input {
+    padding-right: 2rem;
+}
+
+/* place the button inside the input, vertically centered on the right edge */
+#toggle-password {
+    position: absolute;
+    right: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+}
+
+#toggle-password img {
+    width: 16px;
+    height: 16px;
+}
+
+/* hide Edge's built-in eye so there aren't two */
+.password-field input::-ms-reveal {
+    display: none;
+}
+}

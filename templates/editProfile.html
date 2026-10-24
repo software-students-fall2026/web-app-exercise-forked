@@ -41,6 +41,15 @@
         <label for="age">Age</label>
         <input id="age" type="number" name="age" min="1" max="120" value="{{ user.age or '' }}">
 
+        <label for="password">New Password</label>
+        <div class="password-field">
+            <input id="password" type="password" name="password" value="" autocomplete="new-password" placeholder="Leave blank to keep current password">
+            <button type="button" id="toggle-password" aria-label="Show password">
+                <img id="toggle-password-icon" src="{{ url_for('static', filename='images/eye-crossed.svg') }}" alt="">
+            </button>
+
+        </div>
+
         <h2>Skills I can teach</h2>
         {% for skill in user.teach_skills %}
             {{ skill_row("teach", skill, "Proficiency") }}
@@ -64,4 +73,6 @@
         <button type="submit">Save</button>
         <a href="{{ url_for('profile.my_profile') }}">Cancel</a>
     </form>
+    <script src="{{ url_for('static', filename='js/editProfile.js') }}"></script>
+
 {% endblock %}
