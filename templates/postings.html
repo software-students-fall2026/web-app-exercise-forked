@@ -30,9 +30,9 @@
 
     {% for u in users %}
         <div>
-            <h3>{{ u.username }}</h3>
-            <form method="POST" action="{{ url_for('matches.add_match', user_id=u._id)}}"> 
-                <button type="submit"> 
+            <h3><a href="{{url_for('profile.view', user_id=u._id)}}">{{ u.username }}</a></h3>
+            <form class="match-form" method="POST" action="{{ url_for('matches.add_match', user_id=u._id)}}"> 
+                <button type="submit" class="match-btn"> 
                     Match
                 </button>
             </form>
@@ -47,4 +47,6 @@
     {% else %}
         <p>No one is teaching {% if search %}"{{ search }}"{% else %}anything{% endif %} yet.</p>
     {% endfor %}
+    
+    <script src="{{ url_for('static', filename='js/matches.js') }}"></script>
 {% endblock %}

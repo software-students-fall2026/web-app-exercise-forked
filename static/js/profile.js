@@ -21,3 +21,15 @@ document.querySelectorAll(".skill-card").forEach((card) => {
         
     })
 })
+
+const reportBtn = document.querySelector(".report-btn")
+const reportDialog = document.getElementById("report-dialog")
+const closeReport = document.getElementById("close-report")
+
+reportBtn.addEventListener("click", () => {
+    reportDialog.showModal()
+})
+
+closeReport.addEventListener("click", () => {
+    reportDialog.close()
+})

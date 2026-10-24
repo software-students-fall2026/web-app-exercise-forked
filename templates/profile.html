@@ -71,5 +71,24 @@
     </div>
 </dialog>
 
+{% if not is_own %}
+<div class="report">
+    <button class="report-btn">Report User</button>
+    <dialog id="report-dialog">
+        <div>
+            <h2>Report User</h2>
+            
+            <form action="{{ url_for('profile.report', user_id=user._id) }}" method="POST" >
+                <label for="report-reason">Reason for report:</label>
+                <textarea name="report-reason" id="report-reason" required></textarea>
+
+                <button type="submit">Submit Report</button>
+                <button type="button" id="close-report">Cancel</button>
+            </form>
+        </div>
+    </dialog>
+</div>
+{% endif %}
+
 <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 {% endblock %}

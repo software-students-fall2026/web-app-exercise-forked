@@ -21,6 +21,7 @@
             <label>Description
                 <textarea name="{{ prefix }}_description" rows="2">{{ skill.description or '' }}</textarea>
             </label>
+            <button type="button" class="remove-skill">Remove skill</button>
         </fieldset>
     {% endmacro %}
 
@@ -44,7 +45,17 @@
         <label for="age">Age</label>
         <input id="age" type="number" name="age" min="1" max="120" value="{{ user.age or '' }}">
 
+        <label for="password">New Password</label>
+        <div class="password-field">
+            <input id="password" type="password" name="password" value="" autocomplete="new-password" placeholder="Leave blank to keep current password">
+            <button type="button" id="toggle-password" aria-label="Show password">
+                <img id="toggle-password-icon" src="{{ url_for('static', filename='images/eye-crossed.svg') }}" alt="">
+            </button>
+
+        </div>
+
         <h2>Skills I can teach</h2>
+        <div class="skill-rows">
         {% for skill in user.teach_skills %}
             {{ skill_row("teach", skill, "Proficiency") }}
         {% endfor %}
@@ -52,8 +63,12 @@
         {% for i in range(blank_rows) %}
             {{ skill_row("teach", {}, "Proficiency") }}
         {% endfor %}
-
+        </div>
+        
+        <button type="button" class="add-row">Add row</button>
+        
         <h2>Skills I want to learn</h2>
+        <div class="skill-rows">
         {% for skill in user.learn_skills %}
             {{ skill_row("learn", skill, "Current level") }}
         {% endfor %}
@@ -61,10 +76,15 @@
         {% for i in range(blank_rows) %}
             {{ skill_row("learn", {}, "Current level") }}
         {% endfor %}
+        </div>
 
+        <button type="button" class="add-row">Add row</button>
+        
         <p>To remove a skill, clear its name. Save and come back for more empty rows for now (will add a + button later).</p>
 
         <button type="submit">Save</button>
         <a href="{{ url_for('profile.my_profile') }}">Cancel</a>
     </form>
+    <script src="{{ url_for('static', filename='js/editProfile.js') }}"></script>
+
 {% endblock %}

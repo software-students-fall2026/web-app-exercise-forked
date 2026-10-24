@@ -2,6 +2,7 @@ from bson.errors import InvalidId
 from bson.objectid import ObjectId
 from flask import Blueprint, render_template, abort, redirect, request, url_for
 from flask_login import current_user, login_required
+from werkzeug.security import generate_password_hash
 from db import db
 from .auth import validate_phone
 
@@ -20,8 +21,7 @@ def find_user(user_id: str):
 @profile_bp.route("/")
 @login_required
 def my_profile():
-    user = find_user(current_user.id)
-    return render_template("profile.html", user=user, is_own=True)
+    return redirect(url_for("profile.view", user_id=current_user.id))
 
 @profile_bp.route("/<user_id>")
 def view(user_id):
@@ -95,15 +95,42 @@ def edit():
             return show_form("Age must be a whole number from 1 to 120.")
         age = int(age_text)
 
+    updates = {
+        "username": username,
+        "email": email,
+        "age": age,
+        "teach_skills": read_skills("teach", teach_skills),
+        "learn_skills": read_skills("learn", learn_skills),
+    }
+
+    # blank password field means keep the current one
+    password = request.form.get("password","")
+    if password:
+        updates["password"] = generate_password_hash(password)
+
     db.users.update_one(
         {"_id": user["_id"]},
-        {"$set": {
-            "username": username,
-            "email": email,
-            "age": age,
-            "phone": phone,
-            "teach_skills": read_skills("teach", teach_skills),
-            "learn_skills": read_skills("learn", learn_skills),
-        }},
+        {"$set": updates},
     )
     return redirect(url_for("profile.my_profile"))
+
+
+@profile_bp.route("/report/<user_id>", methods=["POST"])
+@login_required
+def report(user_id):
+    reported_user = find_user(user_id)
+    
+    if current_user.id == str(reported_user["_id"]):
+        abort(400, description="You cannot report yourself")
+
+    reason = request.form["report-reason"]
+    db.reports.insert_one({
+        "reported_user_id": reported_user["_id"],
+        "reporter_user_id": ObjectId(current_user.id),
+        "reason": reason
+    })
+
+    reporter_user = find_user(current_user.id)
+
+    return render_template("report.html", reported_user=reported_user, reporter_user=reporter_user, reason=reason)
+    
