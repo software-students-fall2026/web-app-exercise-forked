@@ -2,6 +2,7 @@ from bson.errors import InvalidId
 from bson.objectid import ObjectId
 from flask import Blueprint, render_template, abort, redirect, request, url_for
 from flask_login import current_user, login_required
+from werkzeug.security import generate_password_hash
 from db import db
 
 profile_bp = Blueprint('profile', __name__, url_prefix="/profile")
@@ -87,14 +88,21 @@ def edit():
             return show_form("Age must be a whole number from 1 to 120.")
         age = int(age_text)
 
+    updates = {
+        "username": username,
+        "email": email,
+        "age": age,
+        "teach_skills": read_skills("teach", teach_skills),
+        "learn_skills": read_skills("learn", learn_skills),
+    }
+
+    # blank password field means keep the current one
+    password = request.form.get("password","")
+    if password:
+        updates["password"] = generate_password_hash(password)
+
     db.users.update_one(
         {"_id": user["_id"]},
-        {"$set": {
-            "username": username,
-            "email": email,
-            "age": age,
-            "teach_skills": read_skills("teach", teach_skills),
-            "learn_skills": read_skills("learn", learn_skills),
-        }},
+        {"$set": updates},
     )
     return redirect(url_for("profile.my_profile"))
