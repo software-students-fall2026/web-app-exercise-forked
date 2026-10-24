@@ -19,9 +19,7 @@ def find_user(user_id: str):
 @profile_bp.route("/")
 @login_required
 def my_profile():
-    user = find_user(current_user.id)
-    print(current_user.id)
-    return render_template("profile.html", user=user, is_own=True)
+    return redirect(url_for("profile.view", user_id=current_user.id))
 
 @profile_bp.route("/<user_id>")
 def view(user_id):
