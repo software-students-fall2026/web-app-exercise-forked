@@ -8,12 +8,21 @@
 
     <form action =" {{ url_for('postings.posts') }}" method="get">
         <input type="search" name="skill" value="{{search}}" placeholder="Search by skill, e.g. Pottery">
+        
+        <label for="min_age">Age from</label>
+        <input id="min_age" type="number" name="min_age" min="1" max="120" value="{{ min_age if min_age is not none else ''}}">
+
+
+        <label for="max_age">to</label>
+        <input id="max_age" type="number" name="max_age" min="1" max="120" value="{{ max_age if max_age is not none else '' }}">
+
         <button type="submit">Search</button>
-        {% if search%}
+        {% if search or min_age is not none or max_age is not none%}
             <a href="{{ url_for('postings.posts') }}">Clear Search</a>
         {% endif %}
     </form>
-    
+
+
     {% if all_skills %}
         <h2>Browse</h2>
         <ul>
@@ -27,6 +36,9 @@
         {% if search %}Teachers for "{{ search }}"{% else %}All teachers{% endif %}
         ({{ users|length }})
     </h2>
+    {%  if min_age is not none or max_age is not none %}
+        <p>Ages {{ min_age if min_age is not none else 'any' }} to {{ max_age if max_age is not none else 'any' }}</p>
+    {% endif %}
 
     {% for u in users %}
         <div>
