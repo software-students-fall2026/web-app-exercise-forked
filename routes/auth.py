@@ -21,6 +21,7 @@ def user_loader(user_id):
         return None
     user = User()
     user.id = str(user_doc['_id'])
+    user.role = user_doc.get("role")
     return user
 
 def validate_phone(phone_number, default_region="US"):
@@ -107,7 +108,6 @@ def register():
 
     if request.method == 'GET':
        return render_template('register.html')
-
     
     username = request.form['username']
     email = request.form['email']
@@ -138,6 +138,7 @@ def register():
         'location': location,
         'teach_skills': teach_skills,
         'learn_skills': learn_skills,
+        'role': 'member'
     })
 
     return redirect(url_for('auth.login'))  #login page
