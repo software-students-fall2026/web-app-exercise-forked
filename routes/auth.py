@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, render_template, request, redirect, abort, url_for, make_response
 import flask_login
 import phonenumbers 
-from phonenumbers import NumberParseException, PhoneNumberFormat, region_code_for_number
+from phonenumbers import NumberParseException, PhoneNumberFormat, region_code_for_number, timezone, geocoder
 from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash  #flask secruity thing
 from db import db
@@ -23,13 +23,33 @@ def user_loader(user_id):
     user.id = str(user_doc['_id'])
     return user
 
-def validate_phone(phone_number, default_region= "US"):
+def validate_phone(phone_number, default_region="US"):
+    if not phone_number:            #true if blank
+        return True
     try:
-        number = phonenumbers.parse(phone_number,default_region)    #default for if no country code
-        possible_num = phonenumbers.is_possible_number(number)      
-        return possible_num
-    except:
+        parsed = phonenumbers.parse(phone_number.strip(), default_region)
+        format_check = phonenumbers.is_possible_number(parsed)
+        region_check = region_code_for_number(parsed) 
+        if (format_check and region_check) is not None:      #checks if they have a value
+            return format_check and region_check            #return both boolean values
+    except NumberParseException:
         return False
+
+def get_phone_meta(phone_number, default_region="US"):
+    if not phone_number:
+        return None
+    try:
+        parsed = phonenumbers.parse(phone_number.strip(), default_region)
+        if not (phonenumbers.is_possible_number(parsed) and region_code_for_number(parsed)):
+            return None
+        location_name = geocoder.description_for_number(parsed, "en")
+        zones = timezone.time_zones_for_number(parsed)
+        tz = zones[0] 
+        if location_name and tz:
+            return f"{location_name} ({tz})" # formats it in location (timezone)
+        return location_name or tz           # if one of them fai only show one
+    except NumberParseException:
+        return None
 
 
 
@@ -45,7 +65,6 @@ def request_loader(request):
             ]
         }
     )
-
 
     if not user_doc:
         return None
@@ -109,14 +128,16 @@ def register():
     if db.users.find_one({'phone': phone}):
         return render_template('register.html', error='This phone number is already registered, please use another')
 
-    if validate_phone(phone) == False:
+    if not validate_phone(phone):
         return render_template('register.html', error='Please enter a valid phone number')
+
+    location = get_phone_meta(phone)
 
     db.users.insert_one({
         'email': email,
         'username' : username,
         'password': generate_password_hash(password),  #hashes password so it isn't plaintext
-        'phone': phone,
+        'location': location,
         'teach_skills': teach_skills,
         'learn_skills': learn_skills,
     })

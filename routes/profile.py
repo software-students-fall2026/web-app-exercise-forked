@@ -4,7 +4,8 @@ from flask import Blueprint, render_template, abort, redirect, request, url_for
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 from db import db
-from .auth import validate_phone
+from .auth import validate_phone, get_phone_meta
+from phonenumbers import NumberParseException, PhoneNumberFormat, region_code_for_number, timezone
 
 profile_bp = Blueprint('profile', __name__, url_prefix="/profile")
 
@@ -72,6 +73,7 @@ def edit():
     email = request.form.get("email", "").strip()
     age_text = request.form.get("age", "").strip()
     phone = request.form.get("phone", "").strip()
+    location = get_phone_meta(phone)
 
     if not username:
         return show_form("Username can't be empty.")
@@ -100,6 +102,7 @@ def edit():
         "email": email,
         "age": age,
         "phone": phone,
+        "location": location,     
         "teach_skills": read_skills("teach", teach_skills),
         "learn_skills": read_skills("learn", learn_skills),
     }
