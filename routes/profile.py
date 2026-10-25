@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, abort, redirect, request, url_for
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 from db import db
+from .auth import validate_phone
 
 profile_bp = Blueprint('profile', __name__, url_prefix="/profile")
 
@@ -70,6 +71,7 @@ def edit():
     username = request.form.get("username", "").strip()
     email = request.form.get("email", "").strip()
     age_text = request.form.get("age", "").strip()
+    phone = request.form.get("phone", "").strip()
 
     if not username:
         return show_form("Username can't be empty.")
@@ -81,6 +83,12 @@ def edit():
     if username != user.get('username') and db.users.find_one({'username': username}):
         return show_form('Username already registered, please pick another') 
 
+    if phone and phone != user.get('phone') and db.users.find_one({'phone': phone}):       # phone is there so you can remove your number. if it's empty it allows it to happen instead
+        return show_form('Phone number already registered')                                # of triggering either of the forms
+
+    if phone and validate_phone(phone) == False:
+        return show_form('Please enter a valid phone number') 
+
     age = None
     if age_text:
         if not age_text.isdigit() or not 1 <= int(age_text) <= 120:
@@ -91,6 +99,7 @@ def edit():
         "username": username,
         "email": email,
         "age": age,
+        "phone": phone,
         "teach_skills": read_skills("teach", teach_skills),
         "learn_skills": read_skills("learn", learn_skills),
     }
@@ -111,6 +120,7 @@ def edit():
 @login_required
 def report(user_id):
     reported_user = find_user(user_id)
+    reporter_user = find_user(current_user.id)
     
     if current_user.id == str(reported_user["_id"]):
         abort(400, description="You cannot report yourself")
@@ -118,11 +128,10 @@ def report(user_id):
     reason = request.form["report-reason"]
     db.reports.insert_one({
         "reported_user_id": reported_user["_id"],
-        "reporter_user_id": ObjectId(current_user.id),
+        "reported_user_name": reported_user["username"],
+        "reporter_user_id": reporter_user["_id"],
+        "reporter_user_name": reporter_user["username"],
         "reason": reason
     })
 
-    reporter_user = find_user(current_user.id)
-
     return render_template("report.html", reported_user=reported_user, reporter_user=reporter_user, reason=reason)
-    

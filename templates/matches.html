@@ -25,7 +25,7 @@
             {% endif %}
             <form method="POST" action="{{ url_for('matches.decline_match', match_id=match._id) }}">
                 {% if match.receiver|string == current_user.id %}
-                    <button type="submit">Decline</button>
+                    <button type="submit">Unmatch</button>
                 {% else %}
                     <button type="submit">Cancel</button>
                 {% endif %}

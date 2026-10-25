@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Moderation{% endblock %}
+
+{% block content %}
+    <div>
+        {% if reports %}
+            {% for report in reports %}
+                <p>Reported: {{report.reported_user_name}}</p>
+                <p>Reported by: {{report.reporter_user_name}}</p>
+                <p>Reason: {{report.reason}}</p>
+            {% endfor %}
+        {% else %}
+            <p>No reports yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}
