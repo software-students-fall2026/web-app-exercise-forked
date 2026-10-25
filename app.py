@@ -8,6 +8,8 @@ from routes.auth import auth_bp, login_manager
 from routes.profile import profile_bp
 from routes.matches import matches_bp
 from routes.postings import postings_bp
+from routes.dms import dms_bp
+from socket_event import socketio
 from routes.moderation import moderation_bp
 
 app = Flask(__name__)
@@ -18,6 +20,9 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(profile_bp)
 app.register_blueprint(matches_bp)
 app.register_blueprint(postings_bp)
+app.register_blueprint(dms_bp)
+socketio.init_app(app)
+
 app.register_blueprint(moderation_bp)
 
 @app.route("/")
@@ -28,4 +33,4 @@ def index():
     return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, debug=True)
