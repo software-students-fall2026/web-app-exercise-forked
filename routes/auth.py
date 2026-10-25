@@ -31,10 +31,11 @@ def validate_phone(phone_number, default_region="US"):
         parsed = phonenumbers.parse(phone_number.strip(), default_region)
         format_check = phonenumbers.is_possible_number(parsed)
         region_check = region_code_for_number(parsed) 
-        if (format_check and region_check) is not None:      #checks if they have a value
-            return format_check and region_check            #return both boolean values
+        return format_check and region_check is not None
+
     except NumberParseException:
         return False
+
 
 def get_phone_meta(phone_number, default_region="US"):
     if not phone_number:
@@ -123,7 +124,8 @@ def register():
     if db.users.find_one({'username': username}):
         return render_template('register.html', error='Username already registered, please pick another')
 
-    if db.users.find_one({'phone': phone}):
+    # checks that phone isn't "" -> means user didn't register w/ phone #
+    if phone and db.users.find_one({'phone': phone}):
         return render_template('register.html', error='This phone number is already registered, please use another')
 
     if not validate_phone(phone):
@@ -136,6 +138,7 @@ def register():
         'username' : username,
         'password': generate_password_hash(password),  #hashes password so it isn't plaintext
         'location': location,
+        'phone': phone,
         'teach_skills': teach_skills,
         'learn_skills': learn_skills,
         'role': 'member'
