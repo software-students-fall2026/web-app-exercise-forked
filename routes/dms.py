@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_socketio import emit, join_room
+from bson import ObjectId
 from .profile import find_user
 from socket_event import socketio 
+from db import db
 
 dms_bp = Blueprint("dms", __name__)
 
@@ -14,10 +16,13 @@ def dms_page(user_id):
     if not current_user.is_authenticated:
         return "Unauthroized", 401
 
-    sender = find_user(str(current_user.get_id()))
-    receiver = find_user(str(user_id))
+    sender_id = str(current_user.get_id())
+    receiver_id = str(user_id)
+    sender = find_user(sender_id)
+    receiver = find_user(receiver_id)
+    conversation = retrieve_conversation(sender_id, receiver_id)
 
-    return render_template("dms.html", sender=sender, receiver=receiver)
+    return render_template("dms.html", sender=sender, receiver=receiver, messages=conversation["messages"])
 
 @socketio.on("connect", namespace="/dms")
 def handle_connect():
@@ -45,7 +50,7 @@ def handle_send_dm(data):
     if not isinstance(data, dict):
         return
 
-    recipient_id = data.get("to")
+    recipient_id = str(data.get("to"))
     message = data.get("message")
 
     message = message.strip()
@@ -56,6 +61,9 @@ def handle_send_dm(data):
 
     if recipient_id == sender_id:
         return
+
+    conversation = retrieve_conversation(sender_id, recipient_id)
+    save_conversation(conversation["_id"], sender_id, message)
 
     emit(
         "receive_dm",
@@ -78,3 +86,33 @@ def handle_send_dm(data):
         to=request.sid,
         namespace="/dms"
     )
+
+def retrieve_conversation(user1_id, user2_id):
+    participants = sorted([ObjectId(user1_id), ObjectId(user2_id)], key=str)
+
+    conversation = db.conversations.find_one({"participants" : participants})
+
+    if conversation is None:
+        conversation = {
+            "participants" : participants,
+            "messages": []
+        }
+
+        result = db.conversations.insert_one(conversation)
+        conversation["_id"] = result.inserted_id
+    return conversation
+
+def save_conversation(conversation_id, sender_id, message):
+    result = db.conversations.update_one(
+        {"_id" : conversation_id},
+        {
+            "$push": {
+                "messages": {
+                    "sender_id": ObjectId(sender_id),
+                    "message": message
+                }
+            }
+        }
+    )
+
+    return result.modified_count == 1 #checks the update is valid
