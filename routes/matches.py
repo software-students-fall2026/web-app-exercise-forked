@@ -1,3 +1,4 @@
+from bson.errors import InvalidId
 from bson.objectid import ObjectId
 from datetime import datetime, timezone
 from flask import Blueprint, render_template, abort, redirect, request, url_for
@@ -9,11 +10,11 @@ matches_bp = Blueprint("matches", __name__, url_prefix="/matches")
 @matches_bp.route("/")
 @login_required
 def my_matches():
-    user_id = ObjectId(current_user.id)
+    user_oid = ObjectId(current_user.id)
     all_matches = list(db.matches.find({
         "$or": [
-            {"sender": user_id},
-            {"receiver": user_id},
+            {"sender": user_oid},
+            {"receiver": user_oid},
         ]
     }))
     
@@ -27,13 +28,13 @@ def approve_match(match_id):
     except (InvalidId, TypeError):
         abort(404)
     
-    user_id = ObjectId(current_user.id)
+    user_oid = ObjectId(current_user.id)
     res = db.matches.update_one(
         {
             "_id": match_oid, 
             "$or": [
-                {"sender": user_id},
-                {"receiver": user_id},
+                {"sender": user_oid},
+                {"receiver": user_oid},
             ]
         },
         {"$set": {"status": "Approved"}}
@@ -51,13 +52,13 @@ def decline_match(match_id):
     except (InvalidId, TypeError):
         abort(404)
 
-    user_id = ObjectId(current_user.id)
+    user_oid = ObjectId(current_user.id)
     res = db.matches.delete_one(
         {
             "_id": match_oid, 
             "$or": [
-                {"sender": user_id},
-                {"receiver": user_id},
+                {"sender": user_oid},
+                {"receiver": user_oid},
             ]
         },
     )
@@ -74,15 +75,25 @@ def add_match(user_id):
     except (InvalidId, TypeError):
         abort(404)
 
+    sender_oid = ObjectId(current_user.id)
+    sender = db.users.find_one({
+        "_id": sender_oid
+    })
+    receiver = db.users.find_one({
+        "_id": receiver_oid
+    })
+
     res = db.matches.insert_one({
-        "sender": ObjectId(current_user.id),
+        "sender": sender_oid,
         "receiver": receiver_oid,
+        "sender_name": sender["username"],
+        "receiver_name": receiver["username"],
         "status": "Awaiting Approval",
         "date": datetime.now(timezone.utc)
     })
 
     db.users.update_one(
-        {"_id": ObjectId(current_user.id)},
+        {"_id": sender_oid},
         {
             "$addToSet": {
                 "sent_matches": receiver_oid

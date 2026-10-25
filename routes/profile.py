@@ -4,6 +4,8 @@ from flask import Blueprint, render_template, abort, redirect, request, url_for
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 from db import db
+from .auth import validate_phone, get_phone_meta
+from phonenumbers import NumberParseException, PhoneNumberFormat, region_code_for_number, timezone
 
 profile_bp = Blueprint('profile', __name__, url_prefix="/profile")
 
@@ -20,9 +22,7 @@ def find_user(user_id: str):
 @profile_bp.route("/")
 @login_required
 def my_profile():
-    user = find_user(current_user.id)
-    print(current_user.id)
-    return render_template("profile.html", user=user, is_own=True)
+    return redirect(url_for("profile.view", user_id=current_user.id))
 
 @profile_bp.route("/<user_id>")
 def view(user_id):
@@ -72,6 +72,8 @@ def edit():
     username = request.form.get("username", "").strip()
     email = request.form.get("email", "").strip()
     age_text = request.form.get("age", "").strip()
+    phone = request.form.get("phone", "").strip()
+    location = get_phone_meta(phone)
 
     if not username:
         return show_form("Username can't be empty.")
@@ -83,6 +85,12 @@ def edit():
     if username != user.get('username') and db.users.find_one({'username': username}):
         return show_form('Username already registered, please pick another') 
 
+    if phone and phone != user.get('phone') and db.users.find_one({'phone': phone}):       # phone is there so you can remove your number. if it's empty it allows it to happen instead
+        return show_form('Phone number already registered')                                # of triggering either of the forms
+
+    if phone and validate_phone(phone) == False:
+        return show_form('Please enter a valid phone number') 
+
     age = None
     if age_text:
         if not age_text.isdigit() or not 1 <= int(age_text) <= 120:
@@ -93,6 +101,8 @@ def edit():
         "username": username,
         "email": email,
         "age": age,
+        "phone": phone,
+        "location": location,     
         "teach_skills": read_skills("teach", teach_skills),
         "learn_skills": read_skills("learn", learn_skills),
     }
@@ -107,3 +117,24 @@ def edit():
         {"$set": updates},
     )
     return redirect(url_for("profile.my_profile"))
+
+
+@profile_bp.route("/report/<user_id>", methods=["POST"])
+@login_required
+def report(user_id):
+    reported_user = find_user(user_id)
+    reporter_user = find_user(current_user.id)
+    
+    if current_user.id == str(reported_user["_id"]):
+        abort(400, description="You cannot report yourself")
+
+    reason = request.form["report-reason"]
+    db.reports.insert_one({
+        "reported_user_id": reported_user["_id"],
+        "reported_user_name": reported_user["username"],
+        "reporter_user_id": reporter_user["_id"],
+        "reporter_user_name": reporter_user["username"],
+        "reason": reason
+    })
+
+    return render_template("report.html", reported_user=reported_user, reporter_user=reporter_user, reason=reason)

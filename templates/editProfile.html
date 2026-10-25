@@ -21,6 +21,7 @@
             <label>Description
                 <textarea name="{{ prefix }}_description" rows="2">{{ skill.description or '' }}</textarea>
             </label>
+            <button type="button" class="remove-skill">Remove skill</button>
         </fieldset>
     {% endmacro %}
 
@@ -38,6 +39,9 @@
         <label for="username">Email</label>
         <input id="email" type="text" name="email" value="{{ user.email or '' }}" required>
 
+        <label for="phone">Phone Number</label>
+        <input id="phone" type="text" name="phone" value="{{ user.phone or '' }}">
+
         <label for="age">Age</label>
         <input id="age" type="number" name="age" min="1" max="120" value="{{ user.age or '' }}">
 
@@ -51,6 +55,7 @@
         </div>
 
         <h2>Skills I can teach</h2>
+        <div class="skill-rows">
         {% for skill in user.teach_skills %}
             {{ skill_row("teach", skill, "Proficiency") }}
         {% endfor %}
@@ -58,8 +63,12 @@
         {% for i in range(blank_rows) %}
             {{ skill_row("teach", {}, "Proficiency") }}
         {% endfor %}
-
+        </div>
+        
+        <button type="button" class="add-row">Add row</button>
+        
         <h2>Skills I want to learn</h2>
+        <div class="skill-rows">
         {% for skill in user.learn_skills %}
             {{ skill_row("learn", skill, "Current level") }}
         {% endfor %}
@@ -67,7 +76,10 @@
         {% for i in range(blank_rows) %}
             {{ skill_row("learn", {}, "Current level") }}
         {% endfor %}
+        </div>
 
+        <button type="button" class="add-row">Add row</button>
+        
         <p>To remove a skill, clear its name. Save and come back for more empty rows for now (will add a + button later).</p>
 
         <button type="submit">Save</button>
