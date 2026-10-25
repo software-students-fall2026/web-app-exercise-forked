@@ -72,6 +72,7 @@ def edit():
     email = request.form.get("email", "").strip()
     age_text = request.form.get("age", "").strip()
     phone = request.form.get("phone", "").strip()
+    avatar = request.form.get("avatar", "").strip()
 
     if not username:
         return show_form("Username can't be empty.")
@@ -100,6 +101,7 @@ def edit():
         "email": email,
         "age": age,
         "phone": phone,
+        "avatar" : avatar,
         "teach_skills": read_skills("teach", teach_skills),
         "learn_skills": read_skills("learn", learn_skills),
     }
