@@ -135,6 +135,7 @@ def register():
         'email': email,
         'username' : username,
         'password': generate_password_hash(password),  #hashes password so it isn't plaintext
+        'phone': phone,
         'location': location,
         'teach_skills': teach_skills,
         'learn_skills': learn_skills,
