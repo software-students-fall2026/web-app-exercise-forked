@@ -30,6 +30,18 @@
                     <button type="submit">Cancel</button>
                 {% endif %}
             </form>
+            {% if match.status == "Approved" %}
+                {% if match.receiver|string == current_user.id %}
+                    <form action="{{ url_for('dms.dms_page', user_id=match.sender) }}" method="POST">
+                        <button type="submit">Message</button>
+                    </form>
+                {% elif match.sender|string == current_user.id %}
+                    <form action="{{ url_for('dms.dms_page', user_id=match.receiver) }}" method="POST">
+                        <button type="submit">Message</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+
         {% endfor %}
     {% else %}
         <p>No matches yet.</p>

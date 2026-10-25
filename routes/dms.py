@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_socketio import emit, join_room
+from .profile import find_user
 from socket_event import socketio 
 
 dms_bp = Blueprint("dms", __name__)
@@ -8,12 +9,15 @@ dms_bp = Blueprint("dms", __name__)
 online_users = {}
 
 
-@dms_bp.route("/dms")
-def dms_page():
+@dms_bp.route("/dms/<user_id>", methods=["GET", "POST"])
+def dms_page(user_id):
     if not current_user.is_authenticated:
         return "Unauthroized", 401
 
-    return render_template("dms.html")
+    sender = find_user(str(current_user.get_id()))
+    receiver = find_user(str(user_id))
+
+    return render_template("dms.html", sender=sender, receiver=receiver)
 
 @socketio.on("connect", namespace="/dms")
 def handle_connect():
@@ -47,13 +51,17 @@ def handle_send_dm(data):
     message = message.strip()
     sender_id = str(current_user.get_id())
 
+    sender_user = find_user(sender_id)
+    recipient_user = find_user(recipient_id)
+
     if recipient_id == sender_id:
         return
 
     emit(
         "receive_dm",
         {
-            "from": sender_id,
+            "from_id": sender_id,
+            "from_username": sender_user.get("username"),
             "message": message
         },
         to=f"user:{recipient_id}",
@@ -63,7 +71,8 @@ def handle_send_dm(data):
     emit(
         "dm_sent",
         {
-            "to": recipient_id,
+            "to_id": recipient_id,
+            "to_username": recipient_user.get("username"),
             "message": message
         },
         to=request.sid,

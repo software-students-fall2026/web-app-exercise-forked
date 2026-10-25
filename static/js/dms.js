@@ -13,7 +13,7 @@ socket.on("connect", () => {
 })
 
 socket.on("receive_dm", (data) => {
-    showMessage(`${data.from}: ${data.message}`)
+    showMessage(`${data.from_username}: ${data.message}`)
 })
 
 socket.on("dm_sent", (data) => {
@@ -21,7 +21,8 @@ socket.on("dm_sent", (data) => {
 })
 
 messageBtn.addEventListener("click", () => {
-    const to = document.getElementById("recipient").value.trim()
+    const receiverComponent = document.getElementById('receiver')
+    const to = receiverComponent.dataset.user
     const message = document.getElementById("message").value.trim()
 
     if (!to || !message || !socket.connected) {

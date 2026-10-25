@@ -3,10 +3,9 @@
 {% block title %}Direct Message{% endblock %}
 
 {% block content %}
-    <h1>Direct Message</h1>
+    <h1>Direct Message with {{ receiver.username }}</h1>
 
-    <label for="recipient">Recipient ID:</label>
-    <input id="recipient" type="text" placeholder="User ID">
+    <div id="receiver" data-user="{{ receiver._id|string}}"></div>
 
     <label for="messaage">Message:</label>
     <input id="message" type="text" placeholder="Write a message">
