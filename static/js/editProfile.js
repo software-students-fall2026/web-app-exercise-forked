@@ -37,3 +37,9 @@ function clearRow(row) {
     row.querySelectorAll("input, textarea").forEach((field) => field.value = "")
     row.querySelector("select").selectedIndex = 0
 }
+
+const avatar = document.getElementById("avatar")
+const avatarImg = document.getElementById("avatarImg")
+avatar.addEventListener("change", () => {
+    avatarImg.src = avatar.value
+})

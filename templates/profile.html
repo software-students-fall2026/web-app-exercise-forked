@@ -5,7 +5,11 @@
 {% block content %}
 <div class="profile">
     <aside class="profile-info">
-        <img class="profile-avatar" src="{{ url_for('static', filename='images/placeholder.png') }}" alt="">
+        {% if user.avatar %}
+            <img class="profile-avatar" src="{{ user.avatar }}" alt="">
+        {% else %}
+            <img class="profile-avatar" src="{{ url_for('static', filename='images/default_profile.png') }}" alt="">
+        {% endif %}
         <h1>{{ user.username or "Unnamed user" }}</h1>
         <dl>
             <dt>Email</dt>

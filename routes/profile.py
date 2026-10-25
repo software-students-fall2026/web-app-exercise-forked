@@ -73,6 +73,7 @@ def edit():
     email = request.form.get("email", "").strip()
     age_text = request.form.get("age", "").strip()
     phone = request.form.get("phone", "").strip()
+    avatar = request.form.get("avatar", "").strip()
     location = get_phone_meta(phone)
 
     if not username:
@@ -102,6 +103,7 @@ def edit():
         "email": email,
         "age": age,
         "phone": phone,
+        "avatar" : avatar,
         "location": location,     
         "teach_skills": read_skills("teach", teach_skills),
         "learn_skills": read_skills("learn", learn_skills),
