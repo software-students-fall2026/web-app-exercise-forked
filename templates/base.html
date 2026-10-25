@@ -13,6 +13,9 @@
       <a href="/profile">Profile</a>
       <a href="/postings">Postings</a>
       <a href="/matches">Matches</a>
+      {% if current_user.role == "moderator" %}
+        <a href="/moderation"> Moderation </a>
+      {% endif %}
       <a href="{{ url_for('auth.logout') }}">Log Out</a>
       {% else %}
         <a href="/login">Login</a>
