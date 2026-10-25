@@ -12,7 +12,15 @@
 
     <button type="button" id="message-btn">Send</button>
 
-    <div id="messages"></div>
+    <div id="messages">
+        {% for message in messages %}
+            {% if message.sender_id|string == current_user.id %}
+                <div>You: {{message.message}}</div>
+            {% else %}
+                <div>{{ receiver.username}}: {{message.message}}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
     <script src="{{ url_for('static', filename='js/dms.js' )}}"></script>
