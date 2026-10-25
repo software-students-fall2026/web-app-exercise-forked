@@ -32,7 +32,7 @@
         <p class="error">{{ error }}</p>
     {% endif %}
 
-    <form action="{{ url_for('profile.edit') }}" method="post">
+    <form action="{{ url_for('profile.edit') }}" method="post" enctype="multipart/form-data">
         <label for="username">Username</label>
         <input id="username" type="text" name="username" value="{{ user.username or '' }}" required>
 
@@ -54,13 +54,13 @@
 
         </div>
 
-        <h2>Change Profile Avatar</h2>
-        <label for="avatar">Image Link:</label>
-        <input type="url" id="avatar" name="avatar" placeholder="https://example/xxx.jpg">
-        <div>
-            display image:
-            <img id="avatarImg" src="">
-        </div>
+        <h2>Profile Picture</h2>
+        <img id="avatarImg" class="avatar-preview"
+             src="{{ user.avatar or url_for('static', filename='images/default_profile')}}" alt="">
+
+        <label for="avatar" class="upload-button">Upload photo</label>
+        <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/gif,image/webp" hidden>
+        <span id="avatar-filename"></span>
 
         <h2>Skills I can teach</h2>
         <div class="skill-rows">
