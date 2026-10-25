@@ -141,3 +141,24 @@
 .password-field input::-ms-reveal {
     display: none;
 }
+
+.avatar-preview {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+}
+
+.upload-button {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border: 1px solid #333;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.upload-button:hover {
+    background: #f1f1f1;
+}

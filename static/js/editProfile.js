@@ -40,6 +40,12 @@ function clearRow(row) {
 
 const avatar = document.getElementById("avatar")
 const avatarImg = document.getElementById("avatarImg")
+const avatarFilename = document.getElementById("avatar-filename")
+
 avatar.addEventListener("change", () => {
-    avatarImg.src = avatar.value
+    const file=avatar.files[0]
+    if (!file) return
+
+    avatarImg.src = URL.createObjectURL(file)
+    avatarFilename.textContent = file.name
 })

@@ -1,6 +1,7 @@
+import time
 from bson.errors import InvalidId
 from bson.objectid import ObjectId
-from flask import Blueprint, render_template, abort, redirect, request, url_for
+from flask import Blueprint, render_template, abort, redirect, request, url_for, Response
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 from db import db
@@ -8,6 +9,9 @@ from .auth import validate_phone, get_phone_meta
 from phonenumbers import NumberParseException, PhoneNumberFormat, region_code_for_number, timezone
 
 profile_bp = Blueprint('profile', __name__, url_prefix="/profile")
+
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/gif", "image/webp"}
+MAX_AVATAR_BYTES = 2*1024*1024
 
 def find_user(user_id: str):
     try:
@@ -56,6 +60,18 @@ def read_skills(prefix, old_skills):
         })
     return skills
 
+@profile_bp.route("/avatar/<user_id>")
+def avatar_image(user_id):
+    try:
+        oid = ObjectId(user_id)
+    except (InvalidId, TypeError):
+        abort(404)
+
+    doc = db.avatars.find_one({"user_id": oid})
+    if doc is None:
+        abort(404)
+    return Response(doc["data"], mimetype=doc["content_type"])
+
 @profile_bp.route("/edit", methods=["GET", "POST"])
 @login_required
 def edit():
@@ -73,7 +89,15 @@ def edit():
     email = request.form.get("email", "").strip()
     age_text = request.form.get("age", "").strip()
     phone = request.form.get("phone", "").strip()
-    avatar = request.form.get("avatar", "").strip()
+    avatar_file = request.files.get("avatar")
+    avatar_data = None
+    if avatar_file and avatar_file.filename:
+        if avatar_file.mimetype not in ALLOWED_IMAGE_TYPES:
+            return show_form("Profile picture must be a JPG, PNG, GIF or WebP image.")
+        avatar_data = avatar_file.read()
+        if len(avatar_data) > MAX_AVATAR_BYTES:
+            return show_form("Profile picture must be under 2 MB.")
+
     location = get_phone_meta(phone)
 
     if not username:
@@ -98,12 +122,21 @@ def edit():
             return show_form("Age must be a whole number from 1 to 120.")
         age = int(age_text)
 
+    avatar_url = user.get("avatar")
+    if avatar_data:
+        db.avatars.update_one(
+            {"user_id": user["_id"]},
+            {"$set": {"data": avatar_data, "content_type": avatar_file.mimetype}},
+            upsert=True,
+        )
+        avatar_url = url_for("profile.avatar_image", user_id=str(user["_id"]), v=int(time.time()))
+
     updates = {
         "username": username,
         "email": email,
         "age": age,
         "phone": phone,
-        "avatar" : avatar,
+        "avatar" : avatar_url,
         "location": location,     
         "teach_skills": read_skills("teach", teach_skills),
         "learn_skills": read_skills("learn", learn_skills),
