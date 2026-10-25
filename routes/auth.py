@@ -51,8 +51,6 @@ def get_phone_meta(phone_number, default_region="US"):
     except NumberParseException:
         return None
 
-
-
 @login_manager.request_loader
 def request_loader(request):
     email = request.form.get('email')
