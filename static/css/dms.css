@@ -136,3 +136,24 @@ label[for="message"] {
     gap: 12px;
     width: 100%;
 }
+
+@media (max-width: 480px) {
+    .message-form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .message-form #message {
+        flex: none;
+        width: 100%
+    }
+
+    .message-form #message-btn {
+        width: 100%;
+        margin: 0%;
+    }
+
+    #messages {
+        padding: 14px;
+    }
+}
