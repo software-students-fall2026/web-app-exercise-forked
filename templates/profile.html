@@ -2,6 +2,10 @@
 
 {% block title %}{{ user.username or "Profile" }}{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="profile">
     <aside class="profile-info">
@@ -18,7 +22,7 @@
             <dd>{{ user.age or "Not set" }}</dd>
             <dt>Phone Number</dt>
             <dd>{{ user.phone or "Not set" }}</dd>
-            <dt>Estimated location (Based on phone number)</dt>
+            <dt>Estimated location</dt>
             <dd>
                 {{ user.location }}
                 {% if not user.get('location_verified') %}
@@ -43,7 +47,7 @@
 
     <section class="profile-skills">
         <div class="skill-section">
-            <h2>I can teach</h2>
+            <h2>I CAN TEACH</h2>
             <div class="skill-cards">
                 {% for skill in user.teach_skills or [] %}
                 <button type="button" class="skill-card teach"
@@ -61,7 +65,7 @@
         </div>
 
         <div class="skill-section">
-            <h2>I want to learn</h2>
+            <h2>I WANT TO LEARN</h2>
             <div class="skill-cards">
                 {% for skill in user.learn_skills or [] %}
                 <button type="button" class="skill-card learn"
