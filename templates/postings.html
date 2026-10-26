@@ -37,16 +37,6 @@
         {% endif %}
     </form>
 
-
-    <!-- {% if all_skills %}
-        <h2>Browse</h2>
-        <ul>
-            {% for s in all_skills %}
-                <li><a href="{{ url_for('postings.posts', skill=s) }}">{{ s }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endif %} -->
-
     <h2>
         {% if search %}Teachers for "{{ search }}"{% else %}All teachers{% endif %}
         ({{ users|length }})

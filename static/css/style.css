@@ -1,23 +1,3 @@
-/* .profile { */
-/*   display: grid; */
-/*   grid-template-columns: 280px 1fr; */
-/*   gap: 24px; */
-/*   max-width: 1100px; */
-/*   margin: 24px auto; */
-/*   padding: 0 16px; */
-/* } */
-
-/* Left column: basic info */
-/* .profile-info { */
-/*   display: flex; */
-/*   flex-direction: column; */
-/*   gap: 12px; */
-/*   padding: 20px; */
-/*   border: 1px solid #ddd; */
-/*   border-radius: 8px; */
-/*   min-height: 70vh; */
-/* } */
-
 .profile-avatar {
     width: 120px;
     height: 120px;
@@ -25,7 +5,6 @@
     object-fit: cover;
 }
 
-/* preview of the new avatar on Edit Profile */
 #avatarImg {
     width: 80px;
     height: 80px;
@@ -33,93 +12,15 @@
     object-fit: cover;
 }
 
-/* .profile-info h1 { margin: 0; } */
-/* .profile-info dt { font-size: 0.85rem; font-weight: 600; color: #666; } */
-/* .profile-info dd { margin: 0 0 8px; } */
-
-/* margin-top: auto pushes the button to the bottom of the column */
-/* .edit-button { margin-top: auto; align-self: flex-start; } */
-
-/* Right column: top half teach, bottom half learn */
-/* .profile-skills { */
-/*   display: grid; */
-/*   grid-template-rows: 1fr 1fr; */
-/*   gap: 24px; */
-/* } */
-
-/* .skill-section { */
-/*   padding: 20px; */
-/*   border: 1px solid #ddd; */
-/*   border-radius: 8px; */
-/* } */
-
-/* .skill-section h2 { margin-top: 0; } */
-
-/* .skill-cards { */
-/*   display: grid; */
-/*   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); */
-/*   gap: 12px; */
-/* } */
-
-/* .skill-card { */
-/*   padding: 16px; */
-/*   border: 1px solid; */
-/*   border-radius: 8px; */
-/*   font-size: 1rem; */
-/*   font-weight: 600; */
-/*   cursor: pointer; */
-/*   transition: transform 0.1s, box-shadow 0.1s; */
-/* } */
-
-/* .skill-card:hover { transform: translateY(-2px); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); } */
-/* .skill-card.teach { background: #e8f4ea; border-color: #9cc9a5; } */
-/* .skill-card.learn { background: #e8eef9; border-color: #9fb3d9; } */
-
-/* .empty { color: #888; } */
-
-/* .button { */
-/*   display: inline-block; */
-/*   padding: 8px 16px; */
-/*   border: 1px solid #333; */
-/*   border-radius: 6px; */
-/*   background: #fff; */
-/*   color: #333; */
-/*   text-decoration: none; */
-/*   cursor: pointer; */
-/* } */
-
-/* .button:hover { background: #f1f1f1; } */
-
-/* Skill popup */
-/* #skill-dialog { */
-/*   padding: 0; */
-/*   border: none; */
-/*   border-radius: 8px; */
-/*   width: 90%; */
-/*   max-width: 400px; */
-/* } */
-
-/* #skill-dialog::backdrop { background: rgba(0, 0, 0, 0.4); } */
-/* .dialog-body { padding: 20px; } */
-
-/* Stack columns on narrow screens */
-/* @media (max-width: 700px) { */
-/*   .profile { grid-template-columns: 1fr; } */
-/*   .profile-info { min-height: auto; } */
-/* } */
-
-/* wrapper shrinks to the input's normal width so it matches the other inputs */
 .password-field {
     position: relative;
     display: inline-block;
 }
 
-/* leave room on the right so typed text doesn't go under the icon */
 .password-field input {
     padding-right: 2rem;
 }
 
-/* place the button inside the input, vertically centered on the right edge */
 #toggle-password {
     position: absolute;
     right: 0.4rem;
@@ -137,7 +38,6 @@
     height: 16px;
 }
 
-/* hide Edge's built-in eye so there aren't two */
 .password-field input::-ms-reveal {
     display: none;
 }
@@ -169,8 +69,6 @@
     padding: 0 16px;
 }
 
-
-/* base html header css */
 body {
     margin: 0;
     background-color: #FBFEF9; 
@@ -180,48 +78,61 @@ body {
 
 nav {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     gap: 4px;
-    padding: 8px 16px;
-    background: lightgray;
-    box-shadow: 0 2px 12px rgb(0 0 0 / 12%);
 
+    width: fit-content;                   
+    width: calc(100% - 32px);             
+    max-width: 1100px;                    
+    box-sizing: border-box;            
+    margin: 20px auto;
+    padding: 8px;
+
+    background-color: rgba(197, 213, 228, 0.5);  
+    border: 1px solid #297373;                   
+    border-radius: 999px; 
+    box-shadow: 0 2px 12px rgb(0 0 0 / 8%);
+
+    position: sticky; 
+    top: 12px;
+    z-index: 10;
+    backdrop-filter: blur(6px);
 }
 
 nav a {
-    padding: 6px 12px;
-    border-radius: 8px;
-    color: #100C08;
-    font-family: system-ui, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
+    flex: 1; 
+    text-align: center;
+    padding: 12px 20px;       
+    font-size: 18px;  
+    border-radius: 999px;
+    color: #0A1128;   
+    font-weight: 600;
     text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 nav a:hover {
-    background: white;
-    color: grey;
+    background-color: rgba(41, 115, 115, 0.12);  
+    color: #297373;
 }
 
 nav a:focus-visible {
-    outline: 2px solid #b9f3cc;
-    outline-offset: 3px;
+    outline: 2px solid #297373;
+    outline-offset: 2px;
 }
 
 @media (max-width: 600px) {
     nav {
-        justify-content: center;
-        gap: 4px;
-        padding: 12px;
+        border-radius: 16px;
     }
 
     nav a {
-        padding: 9px 12px;
-        font-size: 14px;
+        padding: 10px 12px;
+        font-size: 16px;
     }
 }
-
 .avatar-small {
     width: 40px;
     height: 40px;

@@ -24,6 +24,7 @@ const reportBtn = document.querySelector(".report-btn")
 const reportDialog = document.getElementById("report-dialog")
 const closeReport = document.getElementById("close-report")
 
+if (reportBtn) {
 reportBtn.addEventListener("click", () => {
     reportDialog.showModal()
 })
@@ -31,3 +32,4 @@ reportBtn.addEventListener("click", () => {
 closeReport.addEventListener("click", () => {
     reportDialog.close()
 })
+}

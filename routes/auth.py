@@ -55,6 +55,9 @@ def get_phone_meta(phone_number, default_region="US"):
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if flask_login.current_user.is_authenticated:
+        flask_login.logout_user()
+
     if request.method == 'GET':
         return render_template('login.html')
 
@@ -96,6 +99,7 @@ def register():
     email = request.form['email']
     phone = request.form['phone']
     password = request.form['password']
+    age = request.form ['age']
 
     teach_skills = parse_skills(request.form.getlist("teach"))
     learn_skills = parse_skills(request.form.getlist("learn"))
@@ -121,6 +125,7 @@ def register():
         'username' : username,
         'password': generate_password_hash(password),  #hashes password so it isn't plaintext
         'phone': phone,
+        'age': age,
         'location': location,
         "location_verified": location_verified,
         'teach_skills': teach_skills,
