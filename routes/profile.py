@@ -32,7 +32,11 @@ def my_profile():
 def view(user_id):
     user = find_user(user_id)
     is_own = current_user.is_authenticated and current_user.id == str(user["_id"])
-    return render_template("profile.html", user=user, is_own=is_own)
+    local_count = 0
+    location = user.get("location")
+    local_count = db.users.count_documents({"location": location}) if location else 0
+    return render_template("profile.html", user=user, is_own=is_own, local_count=local_count)
+
 
 PROFICIENCY_LEVELS = ["No Experience", "Beginner", "Intermediate", "Advanced", "Expert"]
 BLANK_ROWS = 2 
@@ -109,7 +113,7 @@ def edit():
     else:
         location = verified_location
         if verified_location != False:      # if verified location isn't an error
-            location_verified = True
+            location_verified = bool(verified_location)
     
     if not username:
         return show_form("Username can't be empty.")

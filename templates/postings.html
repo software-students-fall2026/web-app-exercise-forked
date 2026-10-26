@@ -6,6 +6,10 @@
     <h1>Postings</h1>
     <p>Browse postings from different users!</p>
 
+    {% if user_location %}
+        <p> {{local_count}} people in your area {{ user_location }}</p>
+    {% endif %}
+
     <form action =" {{ url_for('postings.posts') }}" method="get">
         <label for="skill">Skills:</label>
         <input type="search" name="skill" value="{{search}}" placeholder="Search by skill, e.g. Pottery" list="skill-options">
