@@ -2,6 +2,11 @@
 
 {% block title %}Edit Profile{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/editprofile.css') }}">
+{% endblock %}
+
 {% block content %}
     {% macro skill_row(prefix, skill, level_label) %}
         <fieldset class="skill-row">
@@ -25,30 +30,41 @@
         </fieldset>
     {% endmacro %}
 
-    <h1>Edit Profile</h1>
-    <p>Update your profile information below.</p>
+    <div class="edit-header">
+        <h1>Edit Profile</h1>
+        <p>Update your profile information below.</p>
 
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+    
+    <form class="profile edit-profile" action="{{ url_for('profile.edit') }}" method="post" enctype="multipart/form-data">
+    <aside class="profile-info">
+            <div class="avatar-block">
+                <img id="avatarImg" class="avatar-preview"
+                     src="{{ user.avatar or url_for('static', filename='images/default_profile.png') }}" alt="">
+                <label for="avatar" class="upload-button">Upload photo</label>
+                <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/gif,image/webp" hidden>
+                <span id="avatar-filename"></span>
+            </div>
 
-    <form action="{{ url_for('profile.edit') }}" method="post" enctype="multipart/form-data">
         <label for="username">Username</label>
         <input id="username" type="text" name="username" value="{{ user.username or '' }}" required>
 
-        <label for="username">Email</label>
+        <label for="email">Email</label>
         <input id="email" type="text" name="email" value="{{ user.email or '' }}" required>
 
         <label for="phone">Phone Number</label>
         <input id="phone" type="text" name="phone" value="{{ user.phone or '' }}">
 
-        <label for="phone">Location</label>
+        <label for="typed_location">Location</label>
         <input id="typed_location" type="text" name="typed_location" value="{{ user.location or '' }}">
 
         <label for="age">Age</label>
         <input id="age" type="number" name="age" min="1" max="120" value="{{ user.age or '' }}">
 
-        <label for="preference"> Meeting preference:</label>
+        <label for="pref"> Meeting preference:</label>
         <select name="preference" id="pref">
             <option value="Virtual">Virtual</option>
             <option value="In-person">In-person</option>
@@ -68,15 +84,12 @@
             </button>
 
         </div>
+        </aside>
 
-        <h2>Profile Picture</h2>
-        <img id="avatarImg" class="avatar-preview"
-             src="{{ user.avatar or url_for('static', filename='images/default_profile')}}" alt="">
+        <section class="profile-skills">
+        
 
-        <label for="avatar" class="upload-button">Upload photo</label>
-        <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/gif,image/webp" hidden>
-        <span id="avatar-filename"></span>
-
+        <div class="skill-section teach">
         <h2>Skills I can teach</h2>
         <div class="skill-rows">
         {% for skill in user.teach_skills %}
@@ -89,7 +102,9 @@
         </div>
         
         <button type="button" class="add-row">Add row</button>
-        
+        </div>
+
+        <div class="skill-section learn">
         <h2>Skills I want to learn</h2>
         <div class="skill-rows">
         {% for skill in user.learn_skills %}
@@ -102,11 +117,14 @@
         </div>
 
         <button type="button" class="add-row">Add row</button>
-        
-        <p>To remove a skill, clear its name. Save and come back for more empty rows for now (will add a + button later).</p>
+        </div>
 
-        <button type="submit">Save</button>
-        <a href="{{ url_for('profile.my_profile') }}">Cancel</a>
+        </section>
+
+        <div class="form-actions">
+            <a href="{{ url_for('profile.my_profile') }}">Cancel</a>
+            <button type="submit">Save</button>
+        </div>
     </form>
     <script src="{{ url_for('static', filename='js/editProfile.js') }}"></script>
 
