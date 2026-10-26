@@ -1,9 +1,13 @@
 {% extends "base.html" %}
     
 {% block content %}
-    <h1> Account Banned </h1>
+    {% if current_user.role == "Banned" %}  
+        <h1> Account Banned </h1>
 
-    <p>Your account has been banned from accessing this app.</p>
+        <p>Your account has been banned from accessing this app.</p>
 
-    <a href="{{url_for('auth.logout')}}">Log Out</a>
+        <a href="{{url_for('auth.logout')}}">Log Out</a>
+    {% else %}
+        <p> This user has been banned. </p>
+    {% endif %}
 {% endblock %}
