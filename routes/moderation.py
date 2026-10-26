@@ -12,7 +12,25 @@ moderation_bp = Blueprint("moderation", __name__, url_prefix="/moderation")
 def moderation():
     if current_user.role != "moderator":
         abort(403)
-        
+
     all_reports = list(db.reports.find())
     
     return render_template("moderation.html", reports=all_reports)
+
+@moderation_bp.route("/ban/<user_id>", methods=["POST"])
+@login_required
+def ban_user(user_id):
+    if current_user.role != "moderator":
+        abort(403)
+    
+    try:
+        banned_user_oid = ObjectId(user_id)
+    except (InvalidId, TypeError):
+        abort(404)
+
+    res = db.users.update_one(
+        {"_id": banned_user_oid},
+        {"$set": {"role": "Banned"}}
+    )
+
+    return redirect(url_for("moderation.moderation"))

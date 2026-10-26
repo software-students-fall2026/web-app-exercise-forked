@@ -6,9 +6,12 @@
     <div>
         {% if reports %}
             {% for report in reports %}
-                <p>Reported: {{report.reported_user_name}}</p>
-                <p>Reported by: {{report.reporter_user_name}}</p>
+                <p>Reported: <a href="{{url_for('profile.view', user_id=report.reported_user_id)}}"> {{report.reported_user_name}} </a> </p>
+                <p>Reported by: <a href="{{url_for('profile.view', user_id=report.reporter_user)}}"> {{report.reporter_user_name}} </a> </p>
                 <p>Reason: {{report.reason}}</p>
+                <form method="POST" action="{{url_for('moderation.ban_user', user_id=report.reported_user_id)}}">
+                    <button type="submit">Ban</button>
+                </form>
             {% endfor %}
         {% else %}
             <p>No reports yet.</p>

@@ -12,8 +12,8 @@
     {% if matches %}
         {% for match in matches %}
             <p>{{match.status}}</p>
-            <p>{{match.sender_name}}</p>
-            <p>{{match.receiver_name}}</p>
+            <p> Match Sender: <a href="{{url_for('profile.view', user_id=match.sender)}}"> {{match.sender_name}} </a> </p>
+            <p> Match Receiver: <a href="{{url_for('profile.view', user_id=match.receiver)}}"> {{match.receiver_name}} </a> </p>
             <p>{{match.date}}</p>
             {% if match.receiver|string == current_user.id %}
                 You have received this match!
@@ -41,10 +41,8 @@
                     </form>
                 {% endif %}
             {% endif %}
-
         {% endfor %}
     {% else %}
         <p>No matches yet.</p>
     {% endif %}
-
 {% endblock %}
