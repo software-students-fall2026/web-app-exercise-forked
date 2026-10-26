@@ -30,7 +30,7 @@ Forked is an application that allows people of all ages to trade their skills by
 Clone a copy of this repository to your local machine from GitHub and open the repository directory.
 
 ```bash
-git clone https://github.com/software-students-fall2026/web-app-exercise-git-committed.git
+git clone https://github.com/software-students-fall2026/web-app-exercise-git-forked.git
 cd web-app-exercise-forked
 ```
 
