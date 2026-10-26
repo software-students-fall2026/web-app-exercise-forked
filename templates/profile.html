@@ -19,7 +19,14 @@
             <dt>Phone Number</dt>
             <dd>{{ user.phone or "Not set" }}</dd>
             <dt>Estimated location (Based on phone number)</dt>
-            <dd>{{ user.location }}</dd>
+            <dd>
+                {{ user.location }}
+                {% if not user.get('location_verified') %}
+                    <span style="color: gray;">(Unverified)</span> 
+                {% endif %}
+            </dd>
+            <dt>Meeting Preference</dt>
+            <dd>{{ user.preference }}</dd>
         </dl>
 
         <h2>User Rating</h2>

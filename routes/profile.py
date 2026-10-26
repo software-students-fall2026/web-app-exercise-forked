@@ -89,6 +89,9 @@ def edit():
     email = request.form.get("email", "").strip()
     age_text = request.form.get("age", "").strip()
     phone = request.form.get("phone", "").strip()
+    typed_location = request.form.get("typed_location", "").strip()
+    preference = request.form.get("preference")
+
     avatar_file = request.files.get("avatar")
     avatar_data = None
     if avatar_file and avatar_file.filename:
@@ -98,11 +101,18 @@ def edit():
         if len(avatar_data) > MAX_AVATAR_BYTES:
             return show_form("Profile picture must be under 2 MB.")
 
-    location = get_phone_meta(phone)
+    verified_location = get_phone_meta(phone)
 
+    if typed_location and (typed_location != verified_location):
+        location = typed_location
+        location_verified = False
+    else:
+        location = verified_location
+        if verified_location != False:      # if verified location isn't an error
+            location_verified = True
+    
     if not username:
         return show_form("Username can't be empty.")
-
     
     if email != user.get('email') and db.users.find_one({'email': email}):
         return show_form('Email already registered, please pick another') 
@@ -137,7 +147,9 @@ def edit():
         "age": age,
         "phone": phone,
         "avatar" : avatar_url,
-        "location": location,     
+        "location": location,
+        "location_verified": location_verified,     
+        "preference": preference,
         "teach_skills": read_skills("teach", teach_skills),
         "learn_skills": read_skills("learn", learn_skills),
     }

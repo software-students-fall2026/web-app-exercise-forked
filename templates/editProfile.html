@@ -42,9 +42,24 @@
         <label for="phone">Phone Number</label>
         <input id="phone" type="text" name="phone" value="{{ user.phone or '' }}">
 
+        <label for="phone">Location</label>
+        <input id="typed_location" type="text" name="typed_location" value="{{ user.location or '' }}">
+
         <label for="age">Age</label>
         <input id="age" type="number" name="age" min="1" max="120" value="{{ user.age or '' }}">
 
+        <label for="preference"> Meeting preference:</label>
+        <select name="preference" id="pref">
+            <option value="Virtual">Virtual</option>
+            <option value="In-person">In-person</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="No Preference">No Preference</option>
+        </select>
+
+        <script>
+            document.getElementById('pref').value = "{{ user.preference or 'No Preference' }}";
+        </script>
+        
         <label for="password">New Password</label>
         <div class="password-field">
             <input id="password" type="password" name="password" value="" autocomplete="new-password" placeholder="Leave blank to keep current password">
