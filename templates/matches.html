@@ -6,8 +6,11 @@
     <h1>Matches</h1>
     
     <p>View and manage your matches below.</p>
-
-    <p>You have {{matches|length}} matches.</p>
+    {% if matches|length == 1 %}
+        <p>You have {{matches|length}} match.</p>
+    {% else %}
+        <p>You have {{matches|length}} matches.</p>
+    {% endif %}
 
     {% if matches %}
         {% for match in matches %}

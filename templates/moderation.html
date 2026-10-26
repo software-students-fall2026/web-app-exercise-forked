@@ -4,6 +4,15 @@
 
 {% block content %}
     <div>
+        <form method="GET" action="{{url_for('moderation.moderation')}}">
+            <input
+                type="text"
+                name="search"
+                placeholder="Search for name or reason"
+                value="{{request.args.get('search', '')}}"
+            >
+            <button type="submit">Search</button>
+        </form>
         {% if reports %}
             {% for report in reports %}
                 {% if report.status == "active" %}
