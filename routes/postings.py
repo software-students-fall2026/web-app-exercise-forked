@@ -1,4 +1,3 @@
-import re
 from bson.objectid import ObjectId
 from flask import Blueprint, render_template, abort, redirect, request, url_for
 from flask_login import current_user, login_required
@@ -26,6 +25,9 @@ def posts():
     cur_user = db.users.find_one({"_id": current_user_id})
     sent_matches = cur_user.get("sent_matches", [])
 
+    user_location = cur_user.get("location")
+    local_count = db.users.count_documents({"location": user_location}) if user_location else 0
+
     query = {
         "_id": {
             "$nin": sent_matches + [current_user_id]
@@ -52,4 +54,13 @@ def posts():
     # Every skill anyone teaches, for the "Browse by skill" links
     all_skills = sorted(db.users.distinct("teach_skills.name"), key=str.lower)
 
-    return render_template("postings.html", users=users, search=search, all_skills=all_skills, min_age=min_age, max_age=max_age)
+    return render_template(
+        "postings.html", 
+        users=users, 
+        search=search, 
+        all_skills=all_skills, 
+        min_age=min_age, 
+        max_age=max_age, 
+        local_count = local_count,
+        user_location = user_location
+    )
