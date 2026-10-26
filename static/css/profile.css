@@ -118,6 +118,105 @@
 #skill-dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
 .dialog-body { padding: 20px; }
 
+/* Report button: red tint matches the ban button on the moderation page */
+.report-btn {
+    padding: 8px 16px;
+    border: 1px solid #d49a9a;
+    border-radius: 6px;
+    background: #f9e8e8;
+    color: #8b3030;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.report-btn:hover { background: #f1cccc; }
+
+.report-btn:focus-visible,
+#report-dialog button:focus-visible {
+    outline: 2px solid #297373;
+    outline-offset: 2px;
+}
+
+/* Report popup */
+#report-dialog {
+    padding: 0;
+    border: 1px solid #297373;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 440px;
+    background: #FBFEF9;
+    color: #0A1128;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+#report-dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
+
+#report-dialog > div {
+    padding: 20px;
+    background-color: rgba(197, 213, 228, 0.5);
+}
+
+#report-dialog h2 {
+    margin: 0 0 16px;
+    font-family: "Special Gothic Expanded One", system-ui, sans-serif;
+}
+
+#report-dialog form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#report-dialog label {
+    width: 100%;
+    font-weight: 600;
+    color: #666;
+}
+
+#report-dialog textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 120px;
+    margin-bottom: 6px;
+    padding: 10px 12px;
+    border: 1px solid #297373;
+    border-radius: 6px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+#report-dialog textarea:focus {
+    outline: 2px solid #297373;
+    outline-offset: 1px;
+}
+
+#report-dialog button {
+    padding: 8px 16px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#report-dialog button:hover { background: #f1f1f1; }
+
+#report-dialog button[type="submit"] {
+    background: #f9e8e8;
+    border-color: #d49a9a;
+    color: #8b3030;
+}
+
+#report-dialog button[type="submit"]:hover { background: #f1cccc; }
+
 @media (max-width: 700px) {
     .profile { grid-template-columns: 1fr; }
     .profile-info { min-height: auto; }
