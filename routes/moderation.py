@@ -13,7 +13,19 @@ def moderation():
     if current_user.role != "moderator":
         abort(403)
 
-    all_reports = list(db.reports.find())
+    search = request.args.get("search", "").strip()
+    
+    query = {}
+    if search:
+        query = {
+            "$or":[
+                {"reported_user_name": {"$regex": search, "$options": "i"}},
+                {"reporter_user_name": {"$regex": search, "$options": "i"}},
+                {"reason": {"$regex": search, "$options": "i"}}
+            ]
+        }
+
+    all_reports = list(db.reports.find(query))
     
     return render_template("moderation.html", reports=all_reports)
 
@@ -30,7 +42,7 @@ def ban_user(user_id):
 
     user_res = db.users.update_one(
         {"_id": banned_user_oid},
-        {"$set": {"role": "Banned"}}
+        {"$set": {"role": "Banned", "teach_skills": []}}
     )
     if user_res.matched_count == 0:
         abort(404)

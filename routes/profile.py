@@ -32,6 +32,8 @@ def my_profile():
 def view(user_id):
     user = find_user(user_id)
     is_own = current_user.is_authenticated and current_user.id == str(user["_id"])
+    if (user["role"] == "Banned"):
+        return render_template("banned.html")
     local_count = 0
     location = user.get("location")
     local_count = db.users.count_documents({"location": location}) if location else 0
