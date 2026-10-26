@@ -1,0 +1,140 @@
+.moderation {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.moderation h1,
+.report-section h2 {
+    font-family: "Special Gothic Expanded One", system-ui, sans-serif;
+}
+
+.moderation h1 {
+    margin-bottom: 24px;
+}
+
+.moderation-search {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.moderation-search input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid #297373;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fff;
+}
+
+.moderation-search input:focus {
+    outline: 2px solid #297373;
+    outline-offset: 1px;
+}
+
+.report-section {
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid #297373;
+    background-color: rgba(197, 213, 228, 0.5);
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.report-section:hover {
+    background-color: rgba(197, 213, 228, 0.7);
+}
+
+.report-section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 16px;
+}
+
+.report-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    border: 1px solid #297373;
+    background-color: rgba(197, 213, 228, 0.5);
+    border-radius: 8px;
+    transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
+    min-width: 0;
+}
+
+.report-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    background-color: rgba(197, 213, 228, 0.7);
+}
+
+.report-card p {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.report-card a {
+    color: #297373;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.report-card a:hover {
+    text-decoration: underline;
+}
+
+.report-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.button {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.button:hover {
+    background: #f1f1f1;
+}
+
+.ban-button {
+    background: #f9e8e8;
+    border-color: #d49a9a;
+    color: #8b3030;
+}
+
+.ban-button:hover {
+    background: #f1cccc;
+}
+
+.deny-button {
+    background: #e8eef9;
+    border-color: #9fb3d9;
+}
+
+.deny-button:hover {
+    background: #d6e1f5;
+}
+
+.empty {
+    color: #888;
+}

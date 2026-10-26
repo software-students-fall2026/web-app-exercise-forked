@@ -2,42 +2,63 @@
 
 {% block title %}Moderation{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/moderation.css') }}">
+{% endblock %}
+
 {% block content %}
-    <div>
-        <form method="GET" action="{{url_for('moderation.moderation')}}">
+    <div class="moderation">
+        <h1> Moderation Dashboard </h1>
+
+        <form class="moderation-search" method="GET" action="{{url_for('moderation.moderation')}}">
             <input
                 type="text"
                 name="search"
                 placeholder="Search for name or reason"
                 value="{{request.args.get('search', '')}}"
             >
-            <button type="submit">Search</button>
+            <button class="button" type="submit">Search</button>
         </form>
-        {% if reports %}
-            {% for report in reports %}
-                {% if report.status == "active" %}
-                    <div>
-                        <p>Reported: <a href="{{url_for('profile.view', user_id=report.reported_user_id)}}"> {{report.reported_user_name}} </a> </p>
-                        <p>Reported by: <a href="{{url_for('profile.view', user_id=report.reporter_user)}}"> {{report.reporter_user_name}} </a> </p>
-                        <p>Reason: {{report.reason}}</p>
-                        <form method="POST" action="{{url_for('moderation.ban_user', user_id=report.reported_user_id)}}">
-                            <button type="submit">Ban</button>
-                        </form>
-                        <form method="POST" action="{{url_for('moderation.deny_report', report_id=report._id)}}">
-                            <button type="submit">Deny Request</button>
-                        </form>
-                    </div>
-                {% elif report.status == "denied" or report.status == "approved" %}
-                    <div>
-                        <p>Reported: <a href="{{url_for('profile.view', user_id=report.reported_user_id)}}"> {{report.reported_user_name}} </a> </p>
-                        <p>Reported by: <a href="{{url_for('profile.view', user_id=report.reporter_user)}}"> {{report.reporter_user_name}} </a> </p>
-                        <p>Reason: {{report.reason}}</p>
-                        <p>Status: {{report.status}}</p>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            <p>No reports yet.</p>
-        {% endif %}
+
+        <section class="report-section">
+            <h2> Active Reports </h2>
+
+            <div class="report-grid">
+                {% for report in reports %}
+                    {% if report.status == "active" %}
+                        <div class="report-card">
+                            <p>Reported: <a href="{{url_for('profile.view', user_id=report.reported_user_id)}}"> {{report.reported_user_name}} </a> </p>
+                            <p>Reported by: <a href="{{url_for('profile.view', user_id=report.reporter_user)}}"> {{report.reporter_user_name}} </a> </p>
+                            <p>Reason: {{report.reason}}</p>
+                            <div class="report-actions">
+                                <form method="POST" action="{{url_for('moderation.ban_user', user_id=report.reported_user_id)}}">
+                                    <button class="button ban-button" type="submit">Ban</button>
+                                </form>
+                                <form method="POST" action="{{url_for('moderation.deny_report', report_id=report._id)}}">
+                                    <button class="button deny-button" type="submit">Deny Request</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        
+        <section class="report-section">
+            <h2> Archived Reports </h2>
+
+            <div class="report-grid">
+                {% for report in reports %}
+                    {% if report.status == "denied" or report.status == "approved" %}
+                        <div class="report-card">
+                            <p>Reported: <a href="{{url_for('profile.view', user_id=report.reported_user_id)}}"> {{report.reported_user_name}} </a> </p>
+                            <p>Reported by: <a href="{{url_for('profile.view', user_id=report.reporter_user)}}"> {{report.reporter_user_name}} </a> </p>
+                            <p>Reason: {{report.reason}}</p>
+                            <p>Status: {{report.status}}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
     </div>
 {% endblock %}
