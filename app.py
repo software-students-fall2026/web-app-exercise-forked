@@ -1,9 +1,8 @@
-from flask import Flask, render_template, request, redirect, abort, url_for, make_response
+from flask import Flask, render_template, redirect, url_for
 from flask_login import current_user
 from dotenv import load_dotenv
 load_dotenv()
 import os
-from db import db
 from routes.auth import auth_bp, login_manager
 from routes.profile import profile_bp
 from routes.matches import matches_bp
