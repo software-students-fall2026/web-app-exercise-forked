@@ -102,3 +102,94 @@ def add_match(user_id):
     )
 
     return "", 204
+
+
+@matches_bp.route("/rate/<match_id>", methods=["POST"])
+@login_required
+def rate_match(match_id):
+    try:
+        match_oid = ObjectId(match_id)
+    except (InvalidId, TypeError):
+        abort(404)
+    
+    user_oid = ObjectId(current_user.id)
+    match = db.matches.find_one(
+        {
+            "_id": match_oid, 
+            "$or": [
+                {"sender": user_oid},
+                {"receiver": user_oid},
+            ]
+        },
+    )
+    if match is None:
+        abort(404)
+
+    if match["sender"] == user_oid:
+        rating_field = "sender_rating"
+    else:
+        rating_field = "receiver_rating"
+
+    rating = request.form.get("rating", type=int)
+    if rating is None or not 1 <= rating <= 5:
+        abort(400)
+        
+    res = db.matches.update_one(
+        {
+            "_id": match_oid,
+            "$or": [
+                {"sender" : user_oid},
+                {"receiver": user_oid}
+            ]
+        },
+        {"$set": {rating_field : rating}}
+    )
+
+    if res.matched_count == 0:
+        abort(404)
+
+    if match["sender"] == user_oid:
+        rated_oid = match["receiver"]
+    else:
+        rated_oid = match["sender"]
+
+    rated_matches = db.matches.find(
+        {
+            "$or": [
+                {"sender": rated_oid},
+                {"receiver": rated_oid}
+            ]
+        },
+        {
+            "sender": 1,
+            "sender_rating": 1,
+            "receiver_rating": 1
+        }
+    )
+
+    total = 0
+    rating_count = 0
+
+    for rated_match in rated_matches:
+        if rated_match["sender"] == rated_oid:
+            score = rated_match.get("receiver_rating")
+        else:
+            score = rated_match.get("sender_rating")
+
+        if score is not None:
+            total += score
+            rating_count += 1
+
+    average_rating = (round(total / rating_count, 1) if rating_count else None)
+
+    db.users.update_one(
+        {"_id": rated_oid},
+        {
+            "$set": {
+                "average_rating": average_rating,
+                "rating_count": rating_count
+            }
+        }
+    )
+
+    return redirect(url_for("matches.my_matches"))
