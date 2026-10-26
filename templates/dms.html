@@ -2,28 +2,29 @@
 
 {% block title %}Direct Message{% endblock %}
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dms.css') }}">
-{% endblock %}
-
 {% block content %}
-    <div class="dm-container">
+    <div class="user-row">
+        <img class="avatar-small" src="{{ receiver.avatar or url_for('static', filename='images/default_profile.png') }}" alt="">
         <h1>Direct Message with {{ receiver.username }}</h1>
-        <div id="receiver" data-user="{{ receiver._id|string}}"></div>
-        <div class="message-form">
-            <label for="message"></label>
-            <input id="message" type="text" placeholder="Write a message">
-            <button type="button" id="message-btn">Send</button>
-        </div>
-        <div id="messages">
-            {% for message in messages %}
-                {% if message.sender_id|string == current_user.id %}
-                    <div>You: {{message.message}}</div>
-                {% else %}
-                    <div>{{ receiver.username}}: {{message.message}}</div>
-                {% endif %}
-            {% endfor %}
-        </div>
+    </div>
+
+    <div id="receiver" data-user="{{ receiver._id|string}}"
+         data-receiver-avatar="{{ receiver.avatar or url_for('static', filename='images/default_profile.png') }}"
+         data-my-avatar="{{ sender.avatar or url_for('static', filename='images/default_profile.png') }}"></div>
+    <label for="messaage">Message:</label>
+    <input id="message" type="text" placeholder="Write a message">
+
+    <button type="button" id="message-btn">Send</button>
+
+    <div id="messages">
+        {% for message in messages %}
+            {% set from_me = message.sender_id|string == current_user.id %}
+            {% set author = sender if from_me else receiver %}
+            <div class="user-row dm-message">
+                <img class="avatar-small" src="{{ author.avatar or url_for('static', filename='images/default_profile.png') }}" alt="">
+                <span>{{ "You" if from_me else receiver.username }}: {{ message.message }}</span>
+            </div>
+        {% endfor %}
     </div>
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>

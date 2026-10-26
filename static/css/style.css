@@ -162,3 +162,9 @@
 .upload-button:hover {
     background: #f1f1f1;
 }
+
+.report {
+    max-width: 1100px;
+    margin: 2rem auto 0;
+    padding: 0 16px;
+}
