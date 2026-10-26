@@ -22,8 +22,15 @@
             <dd>{{ user.location }}</dd>
         </dl>
 
+        <h2>User Rating</h2>
+        {% if user.average_rating %}
+            <div>{{user.average_rating}} / 5.0</div>
+        {% else %}
+            <div>No ratings yet</div>
+        {% endif %}
+
         {% if is_own %}
-        <a class="button edit-button" href="{{ url_for('profile.edit') }}">Edit profile</a>
+            <a class="button edit-button" href="{{ url_for('profile.edit') }}">Edit profile</a>
         {% endif %}
     </aside>
 
