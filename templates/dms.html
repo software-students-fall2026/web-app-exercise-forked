@@ -2,6 +2,10 @@
 
 {% block title %}Direct Message{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dms.css') }}">
+{% endblock %}
+
 {% block content %}
     <div class="user-row">
         <img class="avatar-small" src="{{ receiver.avatar or url_for('static', filename='images/default_profile.png') }}" alt="">
