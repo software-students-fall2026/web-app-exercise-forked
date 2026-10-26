@@ -1,0 +1,176 @@
+.postings-container {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.postings-container h1,
+.postings-container h2,
+.user-row h3 {
+    font-family: "Special Gothic Expanded One", system-ui, sans-serif;
+}
+
+.postings-search {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    border: 1px solid #297373;
+    background-color: rgba(197, 213, 228, 0.5);
+    border-radius: 8px;
+    margin-top: 16px;
+    margin-bottom: 24px;
+    transition: background-color 0.2s;
+}
+
+.postings-search:hover {
+    background-color: rgba(197, 213, 228, 0.7);
+}
+
+.postings-search label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.postings-search input[type="search"],
+.postings-search input[type="number"] {
+    padding: 8px 12px;
+    border: 1px solid #297373;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fff;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.postings-search input[type="search"] {
+    min-width: 260px;
+}
+
+.postings-search input[type="number"] {
+    width: 65px;
+}
+
+.postings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+    margin-top: 16px;
+}
+
+.posting-card {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid #297373;
+    background-color: rgba(197, 213, 228, 0.5);
+    border-radius: 8px;
+    height: 250px;
+    box-sizing: border-box;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.1s;
+}
+
+.posting-card:hover {
+    background-color: rgba(197, 213, 228, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.user-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 50px;
+    margin-bottom: 8px;
+}
+
+.avatar-small {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.user-row h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-row h3 a {
+    color: #333;
+    text-decoration: none;
+}
+
+.user-row h3 a:hover {
+    text-decoration: underline;
+}
+
+.match-form {
+    margin: 0 0 10px 0;
+    height: 36px;
+}
+
+.posting-card p {
+    margin: 0 0 6px 0;
+    font-size: 0.95rem;
+}
+
+.posting-card ul {
+    margin: 0;
+    padding-left: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.posting-card ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+.posting-card ul::-webkit-scrollbar-thumb {
+    background-color: #297373;
+    border-radius: 4px;
+}
+
+.posting-card li {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+.button,
+.match-btn,
+.postings-search button {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background 0.15s;
+}
+
+.button:hover,
+.match-btn:hover,
+.postings-search button:hover {
+    background: #f1f1f1;
+}
+
+.postings-container a {
+    color: #333;
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {
+    .postings-grid {
+        grid-template-columns: 1fr;
+    }
+}

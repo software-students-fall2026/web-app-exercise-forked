@@ -2,7 +2,12 @@
 
 {% block title %}Postings{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/postings.css') }}">
+{% endblock %}
+
 {% block content %}
+<div class="postings-container">
     <h1>Postings</h1>
     <p>Browse postings from different users!</p>
 
@@ -10,9 +15,9 @@
         <p> {{local_count}} people in your area {{ user_location }}</p>
     {% endif %}
 
-    <form action =" {{ url_for('postings.posts') }}" method="get">
+    <form class="postings-search" action =" {{ url_for('postings.posts') }}" method="get">
         <label for="skill">Skills:</label>
-        <input type="search" name="skill" value="{{search}}" placeholder="Search by skill, e.g. Pottery" list="skill-options">
+        <input type="search" name="skill" value="{{search}}" placeholder="Search by skill, eg: Pottery" list="skill-options">
         <datalist id="skill-options">
             {% for s in all_skills %}
                 <option value="{{ s }}">
@@ -50,8 +55,9 @@
         <p>Ages {{ min_age if min_age is not none else 'any' }} to {{ max_age if max_age is not none else 'any' }}</p>
     {% endif %}
 
+    <div class="postings-grid">
     {% for u in users %}
-        <div>
+        <div class="posting-card">
             <div class="user-row">
                 <img class="avatar-small" src="{{ u.avatar or url_for('static', filename='images/default_profile.png') }}">
                 <h3><a href="{{url_for('profile.view', user_id=u._id)}}">{{ u.username }}</a></h3>
@@ -72,6 +78,8 @@
     {% else %}
         <p>No one is teaching {% if search %}"{{ search }}"{% else %}anything{% endif %} yet.</p>
     {% endfor %}
+    </div>
     
     <script src="{{ url_for('static', filename='js/matches.js') }}"></script>
+</div>
 {% endblock %}
