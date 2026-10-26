@@ -32,6 +32,8 @@ def my_profile():
 def view(user_id):
     user = find_user(user_id)
     is_own = current_user.is_authenticated and current_user.id == str(user["_id"])
+    if (user["role"] == "Banned"):
+        return render_template("banned.html")
     return render_template("profile.html", user=user, is_own=is_own)
 
 PROFICIENCY_LEVELS = ["No Experience", "Beginner", "Intermediate", "Advanced", "Expert"]
