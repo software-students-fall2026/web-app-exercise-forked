@@ -2,12 +2,18 @@
 
 {% block title %}Home - Landing Page{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
 {% block content %}
-    <div>
-        <h2>Fork your skills</h2>
-        <p>Teach what you know. Learn what you don't. Trade skills with your community!</p>
+    <div class="landing">
+        <div class="landing-intro">
+            <h2>Fork your skills</h2>
+            <p>Teach what you know. Learn what you don't. Trade skills with your community!</p>
+        </div>
     </div>
-    <div>
+    <div class="landing-how">
         <h2>How it works:</h2>
         <ol>
             <li>Post a skill you can teach in your profile</li>
@@ -15,4 +21,5 @@
             <li>Connect with other users near you and trade skills!</li>
         </ol>
     </div>
+    
 {% endblock %}
