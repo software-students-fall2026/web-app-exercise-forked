@@ -180,47 +180,28 @@ body {
 
 nav {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     gap: 4px;
-    padding: 8px 16px;
-    background: lightgray;
-    box-shadow: 0 2px 12px rgb(0 0 0 / 12%);
 
+    width: fit-content;                   
+    max-width: calc(100% - 32px);         
+    margin: 16px auto;                 
+    padding: 6px;
+
+    background-color: rgba(197, 213, 228, 0.5);  
+    border: 1px solid #297373;                   
+    border-radius: 999px; 
+    box-shadow: 0 2px 12px rgb(0 0 0 / 8%);
+
+    position: sticky; 
+    top: 12px;
+    z-index: 10;
+    backdrop-filter: blur(6px);
 }
 
-nav a {
-    padding: 6px 12px;
-    border-radius: 8px;
-    color: #100C08;
-    font-family: system-ui, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    text-decoration: none;
-}
 
-nav a:hover {
-    background: white;
-    color: grey;
-}
-
-nav a:focus-visible {
-    outline: 2px solid #b9f3cc;
-    outline-offset: 3px;
-}
-
-@media (max-width: 600px) {
-    nav {
-        justify-content: center;
-        gap: 4px;
-        padding: 12px;
-    }
-
-    nav a {
-        padding: 9px 12px;
-        font-size: 14px;
-    }
-}
 
 .avatar-small {
     width: 40px;
