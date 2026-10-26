@@ -17,8 +17,6 @@ document.querySelectorAll(".skill-card").forEach((card) => {
         descDialog.textContent = card.dataset.description
         
         skillDialog.showModal()
-
-        
     })
 })
 
