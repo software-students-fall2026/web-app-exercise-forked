@@ -2,24 +2,26 @@
 
 {% block title %}Direct Message{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dms.css') }}">
+{% endblock %}
+
 {% block content %}
-    <h1>Direct Message with {{ receiver.username }}</h1>
-
-    <div id="receiver" data-user="{{ receiver._id|string}}"></div>
-
-    <label for="messaage">Message:</label>
-    <input id="message" type="text" placeholder="Write a message">
-
-    <button type="button" id="message-btn">Send</button>
-
-    <div id="messages">
-        {% for message in messages %}
-            {% if message.sender_id|string == current_user.id %}
-                <div>You: {{message.message}}</div>
-            {% else %}
-                <div>{{ receiver.username}}: {{message.message}}</div>
-            {% endif %}
-        {% endfor %}
+    <div class="dm-container">
+        <h1>Direct Message with {{ receiver.username }}</h1>
+        <div id="receiver" data-user="{{ receiver._id|string}}"></div>
+        <label for="message">Message:</label>
+        <input id="message" type="text" placeholder="Write a message">
+        <button type="button" id="message-btn">Send</button>
+        <div id="messages">
+            {% for message in messages %}
+                {% if message.sender_id|string == current_user.id %}
+                    <div>You: {{message.message}}</div>
+                {% else %}
+                    <div>{{ receiver.username}}: {{message.message}}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
