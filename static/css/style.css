@@ -201,7 +201,38 @@ nav {
     backdrop-filter: blur(6px);
 }
 
+nav a {
+    padding: 8px 16px;
+    border-radius: 999px;
+    color: #0A1128;   
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
 
+nav a:hover {
+    background-color: rgba(41, 115, 115, 0.12);  
+    color: #297373;
+}
+
+nav a:focus-visible {
+    outline: 2px solid #297373;
+    outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+    nav {
+        width: auto;
+        margin: 12px 16px;
+        border-radius: 16px;
+    }
+
+    nav a {
+        padding: 9px 12px;
+        font-size: 14px;
+    }
+}
 
 .avatar-small {
     width: 40px;
