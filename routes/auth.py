@@ -74,6 +74,9 @@ def request_loader(request):
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if flask_login.current_user.is_authenticated:
+        flask_login.logout_user()
+
     if request.method == 'GET':
         return render_template('login.html')
 
