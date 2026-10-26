@@ -218,3 +218,22 @@ nav a:focus-visible {
         font-size: 14px;
     }
 }
+
+.avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.user-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-row h1,
+.user-row h3 {
+    margin: 0;
+}
