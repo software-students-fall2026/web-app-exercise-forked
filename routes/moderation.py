@@ -28,9 +28,39 @@ def ban_user(user_id):
     except (InvalidId, TypeError):
         abort(404)
 
-    res = db.users.update_one(
+    user_res = db.users.update_one(
         {"_id": banned_user_oid},
         {"$set": {"role": "Banned"}}
+    )
+    if user_res.matched_count == 0:
+        abort(404)
+
+    report = db.reports.find_one({
+        "reported_user_id": banned_user_oid
+    })
+    report_res = db.reports.update_one(
+        {"_id": report["_id"]},
+        {"$set": {"status": "approved"}}
+    )
+    if report_res.matched_count == 0:
+        abort(404)
+
+    return redirect(url_for("moderation.moderation"))
+
+@moderation_bp.route("/deny/<report_id>", methods=["POST"])
+@login_required
+def deny_report(report_id):
+    if current_user.role != "moderator":
+        abort(403)
+
+    try:
+        report_oid = ObjectId(report_id)
+    except (InvalidId, TypeError):
+        abort(404)
+
+    res = db.reports.update_one(
+        {"_id": report_oid},
+        {"$set": {"status": "denied"}}
     )
 
     return redirect(url_for("moderation.moderation"))
