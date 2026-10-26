@@ -92,6 +92,7 @@ def login():
     if user_doc and check_password_hash(user_doc['password'], password):
         user = User()                             #creates session and makes user id from mongoid
         user.id = str(user_doc['_id'])
+        user.role = user_doc.get("role")
         flask_login.login_user(user)
         return redirect(url_for('profile.my_profile'))  #user profile page
 
@@ -160,3 +161,10 @@ def logout():
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     return 'Unauthorized', 401
+
+@auth_bp.before_app_request
+def check_banned():
+    if flask_login.current_user.is_authenticated:
+        if getattr(flask_login.current_user, "role", None) == "Banned":
+            if request.endpoint not in ["banned.banned", "auth.logout", "static", "profile.my_profile"]:
+                return redirect(url_for("banned.banned"))
