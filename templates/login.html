@@ -2,9 +2,12 @@
 
 {% block title %}Login{% endblock %}
 
-{% block content %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
 
-    <div>
+{% block content %}
+    <div class="login">
         <h3>Login</h3>
         <form action = "{{ url_for('auth.login') }}" method="post">
             <label for="username">Please enter your username or email</label>
@@ -18,6 +21,6 @@
     </div>
 
     {% if error %}
-    <p> {{error}} </p>
+        <p class="login-error"> {{error}} </p>
     {% endif %}   
 {% endblock %}
