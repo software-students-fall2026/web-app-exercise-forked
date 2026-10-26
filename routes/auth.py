@@ -115,6 +115,7 @@ def register():
     email = request.form['email']
     phone = request.form['phone']
     password = request.form['password']
+    age = request.form ['age']
 
     teach_skills = parse_skills(request.form.getlist("teach"))
     learn_skills = parse_skills(request.form.getlist("learn"))
@@ -140,6 +141,7 @@ def register():
         'username' : username,
         'password': generate_password_hash(password),  #hashes password so it isn't plaintext
         'phone': phone,
+        'age': age,
         'location': location,
         "location_verified": location_verified,
         'teach_skills': teach_skills,

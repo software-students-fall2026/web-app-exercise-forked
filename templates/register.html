@@ -2,38 +2,51 @@
 
 {% block title %}Register{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+{% endblock %}
+
 {% block content %} 
-    <div>
+<div class="register-container">
+    <div class="register-card">
         <h3>Sign Up</h3>
         <p>Please input your credentials to sign up.</p>
-        <form action = "{{ url_for('auth.register') }}" method="post">
+
+        <form action="{{ url_for('auth.register') }}" method="post">
             <input type="text" name="username" placeholder="Username" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
-            
-            <p>Phone Number (Optional)</p>
+            <input type="number" name="age" placeholder="Age" min="1" max="120" required>
+
+            <label class="field-label">Phone Number (Optional)</label>
             <input type="tel" name="phone" placeholder="Phone Number">
 
             <div class="skills-list" data-field="teach">
                 <h2>Skills you can teach</h2>
-                <input type="text" data-entry placeholder="Enter skills you can teach">
-                <button type="button" data-add>Add Skill</button>
-                <div data-list></div>
+                <div class="skill-input-row">
+                    <input type="text" data-entry placeholder="Enter skills you can teach">
+                    <button type="button" data-add>Add Skill</button>
+                </div>
+                <div data-list class="added-skills"></div>
             </div>
 
             <div class="skills-list" data-field="learn">
                 <h2>Skills you want to learn</h2>
-                <input type="text" data-entry placeholder="Enter skills you want to learn">
-                <button type="button" data-add>Add Skill</button>
-                <div data-list></div>
+                <div class="skill-input-row">
+                    <input type="text" data-entry placeholder="Enter skills you want to learn">
+                    <button type="button" data-add>Add Skill</button>
+                </div>
+                <div data-list class="added-skills"></div>
             </div>
 
-            <button type="submit">Sign Up</button>
+            <button type="submit" class="submit-btn">Sign Up</button>
         </form>
+
+        {% if error %}
+            <p class="error-msg">{{error}}</p>
+        {% endif %}
     </div>
-    <script src="{{ url_for('static', filename='js/skills.js') }}"></script>
-    {% if error %}
-    <p> {{error}} </p>
-    {% endif %}
-    
+</div>
+
+<script src="{{ url_for('static', filename='js/skills.js') }}"></script>
 {% endblock %}
