@@ -169,7 +169,8 @@ def report(user_id):
         "reported_user_name": reported_user["username"],
         "reporter_user_id": reporter_user["_id"],
         "reporter_user_name": reporter_user["username"],
-        "reason": reason
+        "reason": reason,
+        "status": "active"
     })
 
     return render_template("report.html", reported_user=reported_user, reporter_user=reporter_user, reason=reason)
