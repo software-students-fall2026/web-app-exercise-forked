@@ -157,3 +157,21 @@ label[for="message"] {
         padding: 14px;
     }
 }
+
+.user-row:has(h1) {
+    margin-bottom: 24px;
+}
+
+.user-row:has(h1) .avatar-small {
+    width: 48px;
+    height: 48px;
+}
+
+.dm-message .avatar-small {
+    width: 28px;
+    height: 28px;
+}
+
+#messages > .dm-message {
+    align-items: flex-start;
+}

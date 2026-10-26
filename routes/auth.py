@@ -133,6 +133,7 @@ def register():
         return render_template('register.html', error='Please enter a valid phone number')
 
     location = get_phone_meta(phone)
+    location_verified = bool(location)
 
     db.users.insert_one({
         'email': email,
@@ -140,7 +141,7 @@ def register():
         'password': generate_password_hash(password),  #hashes password so it isn't plaintext
         'phone': phone,
         'location': location,
-        'phone': phone,
+        "location_verified": location_verified,
         'teach_skills': teach_skills,
         'learn_skills': learn_skills,
         'role': 'member'
