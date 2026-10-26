@@ -47,7 +47,7 @@ def posts():
         query["teach_skills.name"] = {"$regex": re.escape(search), "$options": "i"}
 
     # Get matching users from the database, only their username and  skills but never passwords 
-    users = list(db.users.find(query, {"username": 1, "teach_skills": 1}).sort("username", 1))
+    users = list(db.users.find(query, {"username": 1, "teach_skills": 1, "avatar":1}).sort("username", 1))
 
     # Every skill anyone teaches, for the "Browse by skill" links
     all_skills = sorted(db.users.distinct("teach_skills.name"), key=str.lower)

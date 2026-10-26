@@ -48,7 +48,10 @@
 
     {% for u in users %}
         <div>
-            <h3><a href="{{url_for('profile.view', user_id=u._id)}}">{{ u.username }}</a></h3>
+            <div class="user-row">
+                <img class="avatar-small" src="{{ u.avatar or url_for('static', filename='images/default_profile.png') }}">
+                <h3><a href="{{url_for('profile.view', user_id=u._id)}}">{{ u.username }}</a></h3>
+            </div>
             <form class="match-form" method="POST" action="{{ url_for('matches.add_match', user_id=u._id)}}"> 
                 <button type="submit" class="match-btn"> 
                     Match
