@@ -17,7 +17,7 @@
 
     <form class="postings-search" action =" {{ url_for('postings.posts') }}" method="get">
         <label for="skill">Skills:</label>
-        <input type="search" name="skill" value="{{search}}" placeholder="Search by skill, e.g. Pottery" list="skill-options">
+        <input type="search" name="skill" value="{{search}}" placeholder="Search by skill, eg: Pottery" list="skill-options">
         <datalist id="skill-options">
             {% for s in all_skills %}
                 <option value="{{ s }}">
