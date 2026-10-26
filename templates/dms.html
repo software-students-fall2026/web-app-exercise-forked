@@ -10,9 +10,11 @@
     <div class="dm-container">
         <h1>Direct Message with {{ receiver.username }}</h1>
         <div id="receiver" data-user="{{ receiver._id|string}}"></div>
-        <label for="message">Message:</label>
-        <input id="message" type="text" placeholder="Write a message">
-        <button type="button" id="message-btn">Send</button>
+        <div class="message-form">
+            <label for="message">Message:</label>
+            <input id="message" type="text" placeholder="Write a message">
+            <button type="button" id="message-btn">Send</button>
+        </div>
         <div id="messages">
             {% for message in messages %}
                 {% if message.sender_id|string == current_user.id %}
