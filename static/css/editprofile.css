@@ -168,7 +168,6 @@
 .form-actions button { background: #297373; color: #fff; }
 .form-actions button:hover { background: #1f5a5a; }
 
-/* ---------- Phones ---------- */
 @media (max-width: 700px) {
     .skill-row { grid-template-columns: 1fr; } 
     .form-actions > * { flex: 1; text-align: center; }
