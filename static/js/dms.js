@@ -6,7 +6,7 @@ const receiverComponent = document.getElementById("receiver")
 const receiverAvatar = receiverComponent.dataset.receiverAvatar
 const myAvatar = receiverComponent.dataset.myAvatar
 
-function showMessage(text) {
+function showMessage(text, avatarUrl) {
     const div = document.createElement("div")
     div.className = "user-row dm-message"
 
