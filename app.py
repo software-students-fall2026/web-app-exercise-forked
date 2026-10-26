@@ -11,6 +11,7 @@ from routes.postings import postings_bp
 from routes.dms import dms_bp
 from socket_event import socketio
 from routes.moderation import moderation_bp
+from routes.banned import banned_bp
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -21,6 +22,7 @@ app.register_blueprint(profile_bp)
 app.register_blueprint(matches_bp)
 app.register_blueprint(postings_bp)
 app.register_blueprint(dms_bp)
+app.register_blueprint(banned_bp)
 socketio.init_app(app)
 
 app.register_blueprint(moderation_bp)

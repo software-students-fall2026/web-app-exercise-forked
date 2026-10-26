@@ -11,14 +11,18 @@
   <nav>
     <a href="/">Home</a>
     {% if current_user.is_authenticated %}
-      <a href="/profile">Profile</a>
-      <a href="/postings">Postings</a>
-      <a href="/matches">Matches</a>
-      {% if current_user.role == "moderator" %}
-        <a href="/moderation"> Moderation </a>
-      {% endif %}
-      <a href="{{ url_for('auth.logout') }}">Log Out</a>
+      {% if current_user.role == "Banned" %}
+        <a href="{{ url_for('auth.logout') }}">Log Out</a>
       {% else %}
+        <a href="/profile">Profile</a>
+        <a href="/postings">Postings</a>
+        <a href="/matches">Matches</a>
+        {% if current_user.role == "moderator" %}
+          <a href="/moderation"> Moderation </a>
+        {% endif %}
+        <a href="{{ url_for('auth.logout') }}">Log Out</a>
+      {% endif %}
+    {% else %}
         <a href="/login">Login</a>
         <a href="/register">Register</a>
     {% endif %}
