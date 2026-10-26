@@ -53,25 +53,6 @@ def get_phone_meta(phone_number, default_region="US"):
     except NumberParseException:
         return None
 
-@login_manager.request_loader
-def request_loader(request):
-    email = request.form.get('email')
-    username = request.form.get('username')
-    user_doc = db.users.find_one(       #query specification 
-        {
-            '$or': [    
-            {'email': email},
-            {'username': username} 
-            ]
-        }
-    )
-
-    if not user_doc:
-        return None
-    user = User()
-    user.id = str(user_doc['_id'])
-    return user
-
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if flask_login.current_user.is_authenticated:
