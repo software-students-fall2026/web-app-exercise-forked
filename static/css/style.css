@@ -168,3 +168,53 @@
     margin: 2rem auto 0;
     padding: 0 16px;
 }
+
+
+/* base html header css */
+body {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 8px 16px;
+    background: lightgray;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 12%);
+
+}
+
+nav a {
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: #100C08;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+nav a:hover {
+    background: white;
+    color: grey;
+}
+
+nav a:focus-visible {
+    outline: 2px solid #b9f3cc;
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    nav {
+        justify-content: center;
+        gap: 4px;
+        padding: 12px;
+    }
+
+    nav a {
+        padding: 9px 12px;
+        font-size: 14px;
+    }
+}
